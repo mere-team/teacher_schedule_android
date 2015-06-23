@@ -7,4 +7,5 @@
     <string name="list_faculties">Список факультетов</string>
     <string name="list_cathedries">Список кафедр</string>
     <string name="list_teachers">Список преподователей</string>
+    <string name="title_activity_faculties">FacultiesActivity</string>
 </resources>

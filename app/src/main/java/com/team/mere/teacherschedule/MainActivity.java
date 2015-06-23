@@ -1,16 +1,21 @@
 package com.team.mere.teacherschedule;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private ListView lvSections;
+    private Intent faculties_intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,18 @@ public class MainActivity extends ActionBarActivity {
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, sections);
         lvSections.setAdapter(adapter);
+
+        faculties_intent = new Intent(this, FacultiesActivity.class);
+        lvSections.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView = (TextView) view;
+                String strText = textView.getText().toString();
+                if (strText == getResources().getString(R.string.list_faculties)){
+                    startActivity(faculties_intent);
+                }
+            }
+        });
     }
 
     @Override
