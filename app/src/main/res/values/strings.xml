@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="list_faculties">Список факультетов</string>
+    <string name="list_cathedries">Список кафедр</string>
+    <string name="list_teachers">Список преподователей</string>
 </resources>

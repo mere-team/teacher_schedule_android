@@ -4,14 +4,27 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private ListView lvSections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        lvSections = (ListView) findViewById(R.id.lvSections);
+        String[] sections = new String[] {
+                getResources().getString(R.string.list_faculties),
+                getResources().getString(R.string.list_cathedries),
+                getString(R.string.list_teachers)
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, sections);
+        lvSections.setAdapter(adapter);
     }
 
     @Override
