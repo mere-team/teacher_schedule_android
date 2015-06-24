@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static FacultiesActivity FacultiesActivity;
+
     private ListView lvSections;
     private Intent faculties_intent;
 

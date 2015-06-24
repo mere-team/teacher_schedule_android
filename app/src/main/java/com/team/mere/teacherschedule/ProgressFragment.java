@@ -9,11 +9,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class ProgressFragment extends Fragment{
 
@@ -31,7 +36,7 @@ public class ProgressFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_progress, container, false);
         contentView = (TextView) view.findViewById(R.id.content);
         if (contentText != null){
-            contentView.setText(contentText);
+            contentView.setVisibility(View.INVISIBLE);
         }
         return  view;
     }
@@ -53,6 +58,18 @@ public class ProgressFragment extends Fragment{
                 content = getContent("http://ulstuschedule.azurewebsites.net/api/faculties");
             } catch (IOException ex){
                 content = ex.getMessage();
+            }
+            try{
+                JSONArray jsonArray = new JSONArray(content);
+                ArrayList<String> faculties = new ArrayList<>(jsonArray.length());
+                for (int i = 0; i < jsonArray.length(); i++){
+                    JSONObject faculty = jsonArray.optJSONObject(i);
+                    faculties.add(faculty.getString("Name"));
+                }
+
+            }
+            catch (JSONException ex){
+
             }
             return  content;
         }

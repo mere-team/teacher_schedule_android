@@ -17,7 +17,7 @@ public class FacultiesActivity extends ActionBarActivity {
         setContentView(R.layout.activity_faculties);
 
         lvFaculties = (ListView) findViewById(R.id.lvFaculties);
-
+        MainActivity.FacultiesActivity = this;
     }
 
     @Override
@@ -40,5 +40,9 @@ public class FacultiesActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setFaculties(String[] faculties){
+
     }
 }
