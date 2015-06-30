@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.team.mere.teacherschedule" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +21,10 @@
         <activity
             android:name=".FacultiesActivity"
             android:label="@string/title_activity_faculties" >
+        </activity>
+        <activity
+            android:name=".FacultyActivity"
+            android:label="@string/title_activity_faculty" >
         </activity>
     </application>
 

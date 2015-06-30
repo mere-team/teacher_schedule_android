@@ -1,15 +1,32 @@
 package com.team.mere.teacherschedule;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 
-public class FacultiesActivity extends ActionBarActivity {
+public class FacultiesActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
 
     private ListView lvFaculties;
+    private Intent intentToFaculty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +35,8 @@ public class FacultiesActivity extends ActionBarActivity {
 
         lvFaculties = (ListView) findViewById(R.id.lvFaculties);
         MainActivity.FacultiesActivity = this;
+
+        intentToFaculty = new Intent(this, FacultyActivity.class);
     }
 
     @Override
@@ -42,7 +61,12 @@ public class FacultiesActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setFaculties(String[] faculties){
-
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView tv = (TextView) view;
+        if (tv != null || tv.getText() != "( ����������� )") {
+            intentToFaculty.putExtra("faculty", tv.getText());
+            startActivity(intentToFaculty);
+        }
     }
 }

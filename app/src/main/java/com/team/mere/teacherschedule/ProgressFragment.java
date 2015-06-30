@@ -1,5 +1,6 @@
 package com.team.mere.teacherschedule;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +27,11 @@ public class ProgressFragment extends Fragment{
     private String contentText = null;
 
     @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
@@ -36,7 +42,7 @@ public class ProgressFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_progress, container, false);
         contentView = (TextView) view.findViewById(R.id.content);
         if (contentText != null){
-            contentView.setVisibility(View.INVISIBLE);
+            contentView.setText(contentText);//setVisibility(View.INVISIBLE);
         }
         return  view;
     }
@@ -49,6 +55,7 @@ public class ProgressFragment extends Fragment{
             new ProgressTask().execute();
     }
 
+
     class ProgressTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -56,20 +63,10 @@ public class ProgressFragment extends Fragment{
             String content;
             try{
                 content = getContent("http://ulstuschedule.azurewebsites.net/api/faculties");
+                if (content == "")
+                    return "Data not downloaded";
             } catch (IOException ex){
                 content = ex.getMessage();
-            }
-            try{
-                JSONArray jsonArray = new JSONArray(content);
-                ArrayList<String> faculties = new ArrayList<>(jsonArray.length());
-                for (int i = 0; i < jsonArray.length(); i++){
-                    JSONObject faculty = jsonArray.optJSONObject(i);
-                    faculties.add(faculty.getString("Name"));
-                }
-
-            }
-            catch (JSONException ex){
-
             }
             return  content;
         }
