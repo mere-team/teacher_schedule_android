@@ -22,8 +22,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import Helpers.JsonDownloadTask;
 
-public class FacultiesActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
+
+public class FacultiesActivity extends ActionBarActivity
+        implements AdapterView.OnItemClickListener, JsonDownloadTask.OnJsonDownloadedListener{
 
     private ListView lvFaculties;
     private Intent intentToFaculty;
@@ -34,7 +37,8 @@ public class FacultiesActivity extends ActionBarActivity implements AdapterView.
         setContentView(R.layout.activity_faculties);
 
         lvFaculties = (ListView) findViewById(R.id.lvFaculties);
-        MainActivity.FacultiesActivity = this;
+
+        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/faculties", this).execute();
 
         intentToFaculty = new Intent(this, FacultyActivity.class);
     }
@@ -64,9 +68,24 @@ public class FacultiesActivity extends ActionBarActivity implements AdapterView.
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView tv = (TextView) view;
-        if (tv != null || tv.getText() != "( ����������� )") {
+        if (tv != null || tv.getText() != "( Отсутствует )") {
             intentToFaculty.putExtra("faculty", tv.getText());
             startActivity(intentToFaculty);
         }
+    }
+
+    @Override
+    public void onJsonDownloaded(JSONArray data) {
+        ArrayList<String> faculties = new ArrayList<>();
+        for (int i = 0; i < data.length(); i++){
+            try {
+                JSONObject faculty = data.optJSONObject(i);
+                faculties.add(faculty.getString("Name"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, faculties);
+        lvFaculties.setAdapter(adapter);
     }
 }

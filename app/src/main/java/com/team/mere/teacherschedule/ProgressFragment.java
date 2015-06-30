@@ -42,7 +42,7 @@ public class ProgressFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_progress, container, false);
         contentView = (TextView) view.findViewById(R.id.content);
         if (contentText != null){
-            contentView.setText(contentText);//setVisibility(View.INVISIBLE);
+            contentView.setText(contentText);
         }
         return  view;
     }
