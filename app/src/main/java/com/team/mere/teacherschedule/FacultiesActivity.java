@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import Helpers.JsonDownloadTask;
+import Models.Faculty;
 
 
 public class FacultiesActivity extends ActionBarActivity
@@ -38,7 +39,8 @@ public class FacultiesActivity extends ActionBarActivity
 
         lvFaculties = (ListView) findViewById(R.id.lvFaculties);
 
-        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/faculties", this).execute();
+        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/faculties", this)
+                .execute();
 
         intentToFaculty = new Intent(this, FacultyActivity.class);
     }
@@ -68,24 +70,33 @@ public class FacultiesActivity extends ActionBarActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView tv = (TextView) view;
-        if (tv != null || tv.getText() != "( Отсутствует )") {
-            intentToFaculty.putExtra("faculty", tv.getText());
+        if (tv != null || tv.getText() != "(Отсутствует)") {
+            intentToFaculty.putExtra("facultyId", tv.getText());
             startActivity(intentToFaculty);
         }
     }
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
-        ArrayList<String> faculties = new ArrayList<>();
+        ArrayList<Faculty> faculties = new ArrayList<>();
         for (int i = 0; i < data.length(); i++){
-            try {
-                JSONObject faculty = data.optJSONObject(i);
-                faculties.add(faculty.getString("Name"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            Faculty faculty = getFacultyFromJson(data.optJSONObject(i));
+            if (faculty.Name == "(Отсуствует)") // исправить на уровне сервера
+                continue;
+            faculties.add(faculty);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, faculties);
+        ArrayAdapter<Faculty> adapter = new ArrayAdapter<>(this, R.layout.list_item, faculties);
         lvFaculties.setAdapter(adapter);
+    }
+
+    private Faculty getFacultyFromJson(JSONObject json){
+        Faculty faculty = new Faculty();
+        try {
+            faculty.Id = json.getInt("Id");
+            faculty.Name = json.getString("Name");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        return faculty;
     }
 }
