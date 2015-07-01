@@ -1,48 +1,46 @@
 package com.team.mere.teacherschedule;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import Helpers.JsonDownloadTask;
-import Models.Faculty;
+import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
+import Models.Cathedra;
 
 
-public class FacultiesActivity extends ActionBarActivity
-        implements AdapterView.OnItemClickListener, JsonDownloadTask.OnJsonDownloadedListener{
+public class CathedriesActivity extends ActionBarActivity
+        implements OnItemClickListener, OnJsonDownloadedListener{
 
-    private ListView lvFaculties;
-    private ArrayList<Faculty> faculties;
-    private ArrayAdapter<Faculty> adapter;
+    private ListView lvCathedries;
+    private ArrayList<Cathedra> cathedries;
+    private ArrayAdapter<Cathedra> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faculties);
+        setContentView(R.layout.activity_cathedries);
+        lvCathedries = (ListView) findViewById(R.id.lvCathdries);
 
-        lvFaculties = (ListView) findViewById(R.id.lvFaculties);
-
-        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/faculties", this)
+        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/cathedries", this)
                 .execute();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_faculties, menu);
+        getMenuInflater().inflate(R.menu.menu_cathedries, menu);
         return true;
     }
 
@@ -63,19 +61,19 @@ public class FacultiesActivity extends ActionBarActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intentToFaculty = new Intent(this, FacultyActivity.class);
-        intentToFaculty.putExtra("FacultyId", faculties.get(position).Id);
-        startActivity(intentToFaculty);
+        Intent intent = new Intent(this, CathedraActivity.class);
+        intent.putExtra("CathedraId", cathedries.get(position).Id);
+        startActivity(intent);
     }
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
-        faculties = new ArrayList<>(data.length());
+        cathedries = new ArrayList<>(data.length());
         for (int i = 0; i < data.length(); i++){
-            Faculty faculty = Faculty.getFromJson(data.optJSONObject(i));
-            faculties.add(faculty);
+            Cathedra cathedra = Cathedra.getFromJson(data.optJSONObject(i));
+            cathedries.add(cathedra);
         }
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, faculties);
-        lvFaculties.setAdapter(adapter);
+        adapter = new ArrayAdapter<Cathedra>(this, R.layout.list_item, cathedries);
+        lvCathedries.setAdapter(adapter);
     }
 }

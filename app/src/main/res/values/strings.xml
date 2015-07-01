@@ -9,4 +9,8 @@
     <string name="list_teachers">Список преподователей</string>
     <string name="title_activity_faculties">FacultiesActivity</string>
     <string name="title_activity_faculty">FacultyActivity</string>
+    <string name="title_activity_teachers">TeachersActivity</string>
+    <string name="title_activity_teacher">TeacherActivity</string>
+    <string name="title_activity_cathedries">CathedriesActivity</string>
+    <string name="title_activity_cathedra">CathedraActivity</string>
 </resources>

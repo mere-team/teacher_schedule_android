@@ -17,7 +17,6 @@ public class MainActivity extends ActionBarActivity {
     public static FacultiesActivity FacultiesActivity;
 
     private ListView lvSections;
-    private Intent faculties_intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +29,20 @@ public class MainActivity extends ActionBarActivity {
                 getResources().getString(R.string.list_cathedries),
                 getString(R.string.list_teachers)
         };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, sections);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, sections);
         lvSections.setAdapter(adapter);
 
-        faculties_intent = new Intent(this, FacultiesActivity.class);
         lvSections.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView) view;
                 String strText = textView.getText().toString();
                 if (strText == getResources().getString(R.string.list_faculties)){
-                    startActivity(faculties_intent);
+                    startActivity(new Intent(getApplicationContext(), FacultiesActivity.class));
+                } else if (strText == getResources().getString(R.string.list_cathedries)){
+                    startActivity(new Intent(getApplicationContext(), CathedriesActivity.class));
+                } else if (strText == getResources().getString(R.string.list_teachers)){
+                    startActivity(new Intent(getApplicationContext(), TeachersActivity.class));
                 }
             }
         });
