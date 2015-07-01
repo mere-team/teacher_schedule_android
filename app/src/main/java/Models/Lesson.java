@@ -1,5 +1,8 @@
 package Models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Lesson {
 
     public int Id;
@@ -14,4 +17,31 @@ public class Lesson {
 
     public int TeacherId;
     public Teacher Teacher;
+
+    public String toString(){
+        return "N:" + Number + " Name:" + Name + " DW:" + DayOfWeek +
+                " NW:" + NumberOfWeek + " C:" + Cabinet + " G:" + Group.Name +
+                " T:" + Teacher.Name;
+    }
+
+    public static Lesson getFromJson(JSONObject json){
+        Lesson lesson = new Lesson();
+        try{
+            lesson.Id = json.getInt("Id");
+            lesson.Number = json.getInt("Number");
+            lesson.Name = json.getString("Name");
+            lesson.DayOfWeek = json.getInt("DayOfWeek");
+            lesson.NumberOfWeek = json.getInt("NumberOfWeek");
+            lesson.Cabinet = json.getString("Cabinet");
+
+            lesson.GroupId = json.getInt("GroupId");
+            lesson.Group = Models.Group.getFromJson(json.getJSONObject("Group"));
+
+            lesson.TeacherId = json.getInt("TeacherId");
+            lesson.Teacher = Models.Teacher.getFromJson(json.getJSONObject("Teacher"));
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+        return lesson;
+    }
 }
