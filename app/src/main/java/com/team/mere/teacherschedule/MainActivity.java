@@ -1,9 +1,6 @@
 package com.team.mere.teacherschedule;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,25 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-
-import java.util.ArrayList;
 
 import Helpers.DatabaseHelper;
-import Helpers.JsonDownloadTask;
-import Models.Faculty;
 
 
-public class MainActivity extends ActionBarActivity
-        implements JsonDownloadTask.OnJsonDownloadedListener{
+public class MainActivity extends ActionBarActivity {
 
     private ListView lvSections;
     private Button load_button;
-    private SQLiteDatabase sqLiteDatabase;
-    private DatabaseHelper databaseHelper;
-    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,45 +48,6 @@ public class MainActivity extends ActionBarActivity
                 }
             }
         });
-
-        databaseHelper = new DatabaseHelper(getApplicationContext());
-
-        load_button = (Button)findViewById(R.id.load_button);
-        View.OnClickListener loading = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/faculties", MainActivity.this).execute();
-            }
-        };
-        load_button.setOnClickListener(loading);
-    }
-
-    @Override
-    public void onJsonDownloaded(JSONArray data) {
-
-        sqLiteDatabase = databaseHelper.getWritableDatabase();
-
-        try {
-            for (int i = 0; i < data.length(); i++) {
-                Faculty faculty = Faculty.getFromJson(data.optJSONObject(i));
-                ContentValues cv = new ContentValues();
-                cv.put(DatabaseHelper.COLUMN_NAME, faculty.Name);
-                cv.put(DatabaseHelper.COLUMN_ID, faculty.Id);
-
-                sqLiteDatabase.insert(DatabaseHelper.TABLE, null, cv);
-            }
-
-            toast = Toast.makeText(getApplicationContext(), "Successful" , Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        catch (Exception ex)
-        {
-            toast = Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        finally {
-            sqLiteDatabase.close();
-        }
     }
 
     @Override

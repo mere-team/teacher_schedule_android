@@ -3,7 +3,7 @@ package Models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Cathedra {
+public class Cathedra implements IJsonInterface{
 
     public int Id;
     public String Name;
@@ -13,7 +13,7 @@ public class Cathedra {
         return Name;
     }
 
-    public static Cathedra getFromJson(JSONObject json){
+    public Cathedra getFromJson(JSONObject json){
         Cathedra cathedra = new Cathedra();
         try {
             cathedra.Id = json.getInt("Id");
@@ -23,4 +23,5 @@ public class Cathedra {
         }
         return cathedra;
     }
+
 }

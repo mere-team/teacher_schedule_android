@@ -3,7 +3,9 @@ package Models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Faculty {
+import java.io.Serializable;
+
+public class Faculty implements IJsonInterface{
 
     public int Id;
     public String Name;
@@ -22,7 +24,7 @@ public class Faculty {
         return Name;
     }
 
-    public static Faculty getFromJson(JSONObject json){
+    public Faculty getFromJson(JSONObject json){
         Faculty faculty = new Faculty();
         try {
             faculty.Id = json.getInt("Id");

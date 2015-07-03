@@ -3,7 +3,7 @@ package Models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Teacher {
+public class Teacher implements IJsonInterface {
 
     public int Id;
     public String Name;
@@ -19,7 +19,7 @@ public class Teacher {
         return Name;
     }
 
-    public static Teacher getFromJson(JSONObject json){
+    public Teacher getFromJson(JSONObject json){
         Teacher teacher = new Teacher();
         try{
             teacher.Id = json.getInt("Id");
@@ -27,8 +27,8 @@ public class Teacher {
             teacher.CathedraId = json.getInt("CathedraId");
             teacher.FacultyId = json.getInt("FacultyId");
 
-            teacher.Faculty = Models.Faculty.getFromJson(json.getJSONObject("Faculty"));
-            teacher.Cathedra = Models.Cathedra.getFromJson(json.getJSONObject("Cathedra"));
+            teacher.Faculty = new Faculty().getFromJson(json.getJSONObject("Faculty"));
+            teacher.Cathedra = new Cathedra().getFromJson(json.getJSONObject("Cathedra"));
         } catch (JSONException e){
             e.printStackTrace();
         }
