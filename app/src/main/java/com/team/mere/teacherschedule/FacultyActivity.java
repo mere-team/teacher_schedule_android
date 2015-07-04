@@ -45,7 +45,7 @@ public class FacultyActivity extends ActionBarActivity implements OnJsonDownload
         helper = new JsonHelper(path, getApplicationContext());
 
         try {
-            if (FileIsExist) {
+            if (helper.FileIsExist()) {
                 onJsonDownloaded(helper.GetDataFromFile());
 
             } else if(helper.IsNetworkConnected()) {

@@ -22,7 +22,7 @@ public class JsonHelper<T extends IJsonInterface<T>> {
 
     private String _path;
     private Context _context;
-    private static boolean IsExist = false;
+    private boolean IsExist = false;
 
     public JsonHelper(String path, Context context)
     {
@@ -81,6 +81,7 @@ public class JsonHelper<T extends IJsonInterface<T>> {
 
         for (int i = 0; i < data.length(); i++){
             T item = obj.getFromJson(data.optJSONObject(i));
+            Log.d("Add = ", item.toString());
             array.add(item);
         }
 

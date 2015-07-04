@@ -32,6 +32,9 @@ public class TeacherActivity extends ActionBarActivity
     private static boolean FileIsExist = false;
     private Lesson[] lessons;
 
+    private Toast toast;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,24 +50,24 @@ public class TeacherActivity extends ActionBarActivity
         helper = new JsonHelper(path, getApplicationContext());
 
         try {
-            if (FileIsExist) {
+            if (helper.FileIsExist()) {
                 onJsonDownloaded(helper.GetDataFromFile());
 
             } else if(helper.IsNetworkConnected()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
+                toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
                 toast.show();
                 new JsonDownloadTask(url, this)
                         .execute();
             }
             else {
-                Toast toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
+                toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
                 toast.show();
             }
 
         }
         catch (Exception ex)
         {
-            Toast toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
+            toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
             toast.show();
         }
     }
@@ -90,16 +93,26 @@ public class TeacherActivity extends ActionBarActivity
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        ArrayList<Lesson> lessonsData = helper.GetListOfModels(data, new Lesson());
-        lessons = lessonsData.toArray(new Lesson[lessonsData.size()]);
 
-        for(int day = 1; day < 7; day++){
-            Lesson[] week1Lessons = getDayLessons(1, day);
-            Lesson[] week2Lessons = getDayLessons(2, day);
-            if (week1Lessons.length > 0)
-                llWeek1.addView(createLessonView(week1Lessons));
-            if (week2Lessons.length > 0)
-                llWeek2.addView(createLessonView(week2Lessons));
+        ArrayList<Lesson> lessonsData = helper.GetListOfModels(data, new Lesson());
+
+        if(lessonsData.size() != 0)
+        {
+            lessons = lessonsData.toArray(new Lesson[lessonsData.size()]);
+
+            for (int day = 1; day < 7; day++) {
+                Lesson[] week1Lessons = getDayLessons(1, day);
+                Lesson[] week2Lessons = getDayLessons(2, day);
+                if (week1Lessons.length > 0)
+                    llWeek1.addView(createLessonView(week1Lessons));
+                if (week2Lessons.length > 0)
+                    llWeek2.addView(createLessonView(week2Lessons));
+            }
+        }
+        else
+        {
+            toast = Toast.makeText(getApplicationContext(), "Пар нет", Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 

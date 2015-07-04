@@ -48,7 +48,7 @@ public class TeachersActivity extends ActionBarActivity
         helper = new JsonHelper(path, getApplicationContext());
 
         try {
-            if (FileIsExist) {
+            if (helper.FileIsExist()) {
                 onJsonDownloaded(helper.GetDataFromFile());
 
             } else if(helper.IsNetworkConnected()) {
