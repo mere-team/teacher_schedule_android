@@ -3,7 +3,7 @@ package Models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Group {
+public class Group implements IJsonInterface{
 
     public int Id;
     public String Name;
@@ -13,7 +13,7 @@ public class Group {
         return Name;
     }
 
-    public static Group getFromJson(JSONObject json){
+    public Group getFromJson(JSONObject json){
         Group group = new Group();
         try {
             group.Id = json.getInt("Id");

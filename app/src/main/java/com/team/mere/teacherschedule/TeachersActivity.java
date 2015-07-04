@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 
 import Helpers.JsonDownloadTask;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
+import Helpers.JsonHelper;
+import Models.Faculty;
 import Models.Teacher;
 
 
@@ -29,16 +32,42 @@ public class TeachersActivity extends ActionBarActivity
     private ArrayList<Teacher> teachers;
     private ArrayAdapter<Teacher> adapter;
 
+    private String url = "http://ulstuschedule.azurewebsites.net/api/teachers";
+    private String path = "teachers.json";
+    private JsonHelper helper;
+
+    private static boolean FileIsExist = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers);
         lvTeachers = (ListView) findViewById(R.id.lvTeachers);
 
-        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/teachers", this)
-                .execute();
-
         lvTeachers.setOnItemClickListener(this);
+        helper = new JsonHelper(path, getApplicationContext());
+
+        try {
+            if (FileIsExist) {
+                onJsonDownloaded(helper.GetDataFromFile());
+
+            } else if(helper.IsNetworkConnected()) {
+                Toast toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
+                toast.show();
+                new JsonDownloadTask(url, this)
+                        .execute();
+            }
+            else {
+                Toast toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
+                toast.show();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Toast toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     @Override
@@ -65,12 +94,12 @@ public class TeachersActivity extends ActionBarActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
-        teachers = new ArrayList<>(data.length());
-        for (int i = 0; i < data.length(); i++){
-            Teacher teacher = Teacher.getFromJson(data.optJSONObject(i));
-            teachers.add(teacher);
+        if(!FileIsExist) {
+            helper.SaveJsonToFile(data);
+            FileIsExist = true;
         }
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, teachers);
+        teachers = helper.GetListOfModels(data, new Teacher());
+        adapter = new ArrayAdapter<Teacher>(this, R.layout.list_item, teachers);
         lvTeachers.setAdapter(adapter);
     }
 

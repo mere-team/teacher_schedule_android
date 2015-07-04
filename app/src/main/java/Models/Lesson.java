@@ -3,7 +3,7 @@ package Models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Lesson implements Comparable<Lesson>{
+public class Lesson implements Comparable<Lesson>, IJsonInterface{
 
     public int Id;
     public int Number;
@@ -24,7 +24,7 @@ public class Lesson implements Comparable<Lesson>{
                 " T:" + Teacher.Name;
     }
 
-    public static Lesson getFromJson(JSONObject json){
+    public Lesson getFromJson(JSONObject json){
         Lesson lesson = new Lesson();
         try{
             lesson.Id = json.getInt("Id");
@@ -35,10 +35,10 @@ public class Lesson implements Comparable<Lesson>{
             lesson.Cabinet = json.getString("Cabinet");
 
             lesson.GroupId = json.getInt("GroupId");
-            lesson.Group = Models.Group.getFromJson(json.getJSONObject("Group"));
+            lesson.Group = new Group().getFromJson(json.getJSONObject("Group"));
 
             lesson.TeacherId = json.getInt("TeacherId");
-            lesson.Teacher = Models.Teacher.getFromJson(json.getJSONObject("Teacher"));
+            lesson.Teacher = new Teacher().getFromJson(json.getJSONObject("Teacher"));
         } catch(JSONException e){
             e.printStackTrace();
         }
