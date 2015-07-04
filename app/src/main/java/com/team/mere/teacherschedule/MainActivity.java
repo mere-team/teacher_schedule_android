@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
                 } else if (strText == getResources().getString(R.string.list_cathedries)){
                     startActivity(new Intent(getApplicationContext(), CathedriesActivity.class));
                 } else if (strText == getResources().getString(R.string.list_teachers)){
-                    startActivity(new Intent(getApplicationContext(), TeachersActivity.class));
+                    startActivity(new Intent(getBaseContext(), TeachersActivity.class));
                 }
             }
         });

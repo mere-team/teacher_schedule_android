@@ -35,6 +35,8 @@ public class CathedriesActivity extends ActionBarActivity
 
         new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/cathedries", this)
                 .execute();
+
+        lvCathedries.setOnItemClickListener(this);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class CathedriesActivity extends ActionBarActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, CathedraActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CathedraActivity.class);
         intent.putExtra("CathedraId", cathedries.get(position).Id);
         startActivity(intent);
     }
@@ -73,7 +75,7 @@ public class CathedriesActivity extends ActionBarActivity
             Cathedra cathedra = Cathedra.getFromJson(data.optJSONObject(i));
             cathedries.add(cathedra);
         }
-        adapter = new ArrayAdapter<Cathedra>(this, R.layout.list_item, cathedries);
+        adapter = new ArrayAdapter<>(this, R.layout.list_item, cathedries);
         lvCathedries.setAdapter(adapter);
     }
 }

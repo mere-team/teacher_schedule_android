@@ -37,6 +37,8 @@ public class TeachersActivity extends ActionBarActivity
 
         new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/teachers", this)
                 .execute();
+
+        lvTeachers.setOnItemClickListener(this);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class TeachersActivity extends ActionBarActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, TeacherActivity.class);
+        Intent intent = new Intent(getApplicationContext(), TeacherActivity.class);
         intent.putExtra("TeacherId", teachers.get(position).Id);
         startActivity(intent);
     }

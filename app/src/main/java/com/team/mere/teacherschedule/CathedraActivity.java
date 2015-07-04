@@ -1,17 +1,43 @@
 package com.team.mere.teacherschedule;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
+import Helpers.JsonDownloadTask;
+import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
+import Models.Teacher;
 
 
-public class CathedraActivity extends ActionBarActivity {
+public class CathedraActivity extends ActionBarActivity
+        implements OnJsonDownloadedListener, OnItemClickListener{
+
+    private ListView lvCathedraTeachers;
+    private ArrayList<Teacher> cathedraTeachers;
+    private ArrayAdapter<Teacher> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cathedra);
+        lvCathedraTeachers = (ListView) findViewById(R.id.lvCathedraTeachers);
+
+        int cathedraId = getIntent().getExtras().getInt("CathedraId");
+        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/cathedries/" + cathedraId, this)
+                .execute();
+
+        lvCathedraTeachers.setOnItemClickListener(this);
     }
 
     @Override
@@ -34,5 +60,23 @@ public class CathedraActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onJsonDownloaded(JSONArray data) {
+        cathedraTeachers = new ArrayList<>(data.length());
+        for (int i = 0; i < data.length(); i++){
+            Teacher teacher = Teacher.getFromJson(data.optJSONObject(i));
+            cathedraTeachers.add(teacher);
+        }
+        adapter = new ArrayAdapter<>(this, R.layout.list_item, cathedraTeachers);
+        lvCathedraTeachers.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getApplicationContext(), TeacherActivity.class);
+        intent.putExtra("TeacherId", cathedraTeachers.get(position).Id);
+        startActivity(intent);
     }
 }

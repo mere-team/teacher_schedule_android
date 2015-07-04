@@ -1,17 +1,43 @@
 package com.team.mere.teacherschedule;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
+import Helpers.JsonDownloadTask;
+import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
+import Models.Teacher;
 
 
-public class FacultyActivity extends ActionBarActivity {
+public class FacultyActivity extends ActionBarActivity implements OnJsonDownloadedListener, OnItemClickListener{
+
+    private ListView lvFacultyTeachers;
+    private ArrayList<Teacher> facultyTeachers;
+    private ArrayAdapter<Teacher> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty);
+
+        lvFacultyTeachers = (ListView) findViewById(R.id.lvFacultyTeachers);
+
+        int facultyId = getIntent().getExtras().getInt("FacultyId");
+        new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/faculties/" + facultyId, this)
+                .execute();
+
+        lvFacultyTeachers.setOnItemClickListener(this);
     }
 
     @Override
@@ -34,5 +60,23 @@ public class FacultyActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, TeacherActivity.class);
+        intent.putExtra("TeacherId", facultyTeachers.get(position).Id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onJsonDownloaded(JSONArray data) {
+        facultyTeachers = new ArrayList<>(data.length());
+        for (int i = 0; i < data.length(); i++){
+            Teacher teacher = Teacher.getFromJson(data.optJSONObject(i));
+            facultyTeachers.add(teacher);
+        }
+        adapter = new ArrayAdapter<>(this, R.layout.list_item, facultyTeachers);
+        lvFacultyTeachers.setAdapter(adapter);
     }
 }

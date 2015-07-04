@@ -13,4 +13,30 @@
     <string name="title_activity_teacher">TeacherActivity</string>
     <string name="title_activity_cathedries">CathedriesActivity</string>
     <string name="title_activity_cathedra">CathedraActivity</string>
+
+    <string-array name="daysOfWeek">
+        <item>Понедельник</item>
+        <item>Вторниик</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </string-array>
+
+    <string-array name="lessonNumbers">
+        <item>1 пара (8:00 - 9:30)</item>
+        <item>2 пара (9:40 - 11:10)</item>
+        <item>3 пара (11:30 - 13:00)</item>
+        <item>4 пара (13:10 - 14:40)</item>
+        <item>5 пара (14:50 - 16:20)</item>
+        <item>6 пара (16:30 - 18:00)</item>
+        <item>7 пара (18:10 - 19:40)</item>
+        <item>8 пара (19:50 - 21:10)</item>
+    </string-array>
+
+    <string-array name="weeks">
+        <item>1 неделя</item>
+        <item>2 неделя</item>
+    </string-array>
 </resources>

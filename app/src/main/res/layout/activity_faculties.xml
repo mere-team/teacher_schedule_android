@@ -11,6 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:dividerHeight="1dp"
-        android:divider="@color/accent_material_dark" />
+        android:divider="@color/accent_material_dark"
+        android:gravity="top"/>
 
 </RelativeLayout>

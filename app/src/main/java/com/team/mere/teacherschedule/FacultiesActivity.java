@@ -37,6 +37,8 @@ public class FacultiesActivity extends ActionBarActivity
 
         new JsonDownloadTask("http://ulstuschedule.azurewebsites.net/api/faculties", this)
                 .execute();
+
+        lvFaculties.setOnItemClickListener(this);
     }
 
     @Override

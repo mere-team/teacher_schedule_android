@@ -3,7 +3,7 @@ package Models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Lesson {
+public class Lesson implements Comparable<Lesson>{
 
     public int Id;
     public int Number;
@@ -43,5 +43,19 @@ public class Lesson {
             e.printStackTrace();
         }
         return lesson;
+    }
+
+
+    @Override
+    public int compareTo(Lesson another) {
+        return another.getRate() - this.getRate();
+    }
+
+    private int getRate(){
+        int rate = 0;
+        rate += (3 - NumberOfWeek) * 100;
+        rate += (7 - DayOfWeek) * 10;
+        rate += (9 - Number);
+        return rate;
     }
 }

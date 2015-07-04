@@ -40,7 +40,6 @@ public class JsonDownloadTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onProgressUpdate(Void... items){
-
     }
 
     @Override
