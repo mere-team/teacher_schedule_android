@@ -38,8 +38,9 @@ public class JsonHelper<T extends IJsonInterface<T>> {
             osw.write(data.toString());
             osw.flush();
             osw.close();
+            fOut.close();
 
-            IsExist = true;
+            //IsExist = true;
         }
         catch (Exception ex)
         {
@@ -61,6 +62,9 @@ public class JsonHelper<T extends IJsonInterface<T>> {
             isr.read(inputBuffer);
             readString = new String(inputBuffer);
             array = new JSONArray(readString);
+
+            isr.close();
+            fIn.close();
         }
         catch (Exception ex)
         {
@@ -72,7 +76,20 @@ public class JsonHelper<T extends IJsonInterface<T>> {
 
     public boolean FileIsExist()
     {
-       return IsExist;
+        try
+        {
+            FileInputStream fIn = _context.openFileInput(_path);
+            InputStreamReader isr = new InputStreamReader(fIn);
+
+            isr.close();
+            fIn.close();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return  false;
+        }
     }
 
     public ArrayList<T> GetListOfModels(JSONArray data, T obj)
