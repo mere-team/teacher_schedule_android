@@ -1,8 +1,8 @@
 package com.team.mere.teacherschedule;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,47 +10,45 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import Helpers.JsonDownloadTask;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
-import Models.Cathedra;
-import Models.Faculty;
+import Models.Teacher;
 
 
-public class CathedriesActivity extends ActionBarActivity
+public class CathedraOfFacultyActivity extends ActionBarActivity
         implements OnItemClickListener, OnJsonDownloadedListener{
 
-    private ListView lvCathedries;
-    private ArrayList<Cathedra> cathedries;
-    private ArrayAdapter<Cathedra> adapter;
-
-    private String url = "http://ulstuschedule.azurewebsites.net/api/cathedries";
-    private String path = "cathedra.json";
+    private ListView lvCathedraOfFacultyTeachers;
+    private ArrayList<Teacher> facultyCathedraTeachers;
+    private ArrayAdapter<Teacher> adapter;
     private JsonHelper helper;
-
-    private static boolean FileIsExist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cathedries);
-        lvCathedries = (ListView) findViewById(R.id.lvCathdries);
-        lvCathedries.setOnItemClickListener(this);
+        setContentView(R.layout.activity_cathedra_of_faculty);
+        setTitle(getIntent().getExtras().getString("CathedraName"));
+        lvCathedraOfFacultyTeachers = (ListView) findViewById(R.id.lvCathedraOfFacultyTeachers);
+        lvCathedraOfFacultyTeachers.setOnItemClickListener(this);
 
-        helper = new JsonHelper(path, this);
+        int facultyId = getIntent().getExtras().getInt("FacultyId");
+        int cathedraId = getIntent().getExtras().getInt("CathedraId");
+        String url = "http://ulstuschedule.azurewebsites.net/api/faculties?facultyId=" + facultyId
+                + "&cathedraId=" + cathedraId;
+        String path = "CathedraOfFaculty" + facultyId + ".json";
+
+        helper = new JsonHelper(path, getApplicationContext());
         helper.DownloadJson(url, this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_cathedries, menu);
         return true;
     }
 
@@ -71,20 +69,16 @@ public class CathedriesActivity extends ActionBarActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getApplicationContext(), CathedraActivity.class);
-        intent.putExtra("CathedraId", cathedries.get(position).Id);
-        intent.putExtra("CathedraName", cathedries.get(position).Name);
+        Intent intent = new Intent(this, TeacherActivity.class);
+        intent.putExtra("TeacherId", facultyCathedraTeachers.get(position).Id);
+        intent.putExtra("TeacherName", facultyCathedraTeachers.get(position).Name);
         startActivity(intent);
     }
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
-        if(!FileIsExist) {
-            helper.SaveJsonToFile(data);
-            FileIsExist = true;
-        }
-        cathedries = helper.GetListOfModels(data, new Cathedra());
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, cathedries);
-        lvCathedries.setAdapter(adapter);
+        facultyCathedraTeachers = helper.GetListOfModels(data, new Teacher());
+        adapter = new ArrayAdapter<>(this, R.layout.list_item, facultyCathedraTeachers);
+        lvCathedraOfFacultyTeachers.setAdapter(adapter);
     }
 }

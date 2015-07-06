@@ -47,30 +47,10 @@ public class FacultiesActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculties);
         lvFaculties = (ListView) findViewById(R.id.lvFaculties);
+        lvFaculties.setOnItemClickListener(this);
 
         helper = new JsonHelper(path, getApplicationContext());
-
-        try {
-            if (helper.FileIsExist()) {
-                onJsonDownloaded(helper.GetDataFromFile());
-
-            } else if(helper.IsNetworkConnected()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
-                toast.show();
-                new JsonDownloadTask(url, this)
-                        .execute();
-            }
-            else {
-                Toast toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
-                toast.show();
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
-            toast.show();
-        }
+        helper.DownloadJson(url, this);
     }
 
     @Override
@@ -97,8 +77,9 @@ public class FacultiesActivity extends ActionBarActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Intent intent = new Intent(this, TeacherActivity.class);
+        Intent intent = new Intent(this, FacultyActivity.class);
         intent.putExtra("FacultyId", faculties.get(position).Id);
+        intent.putExtra("FacultyName", faculties.get(position).Name);
         startActivity(intent);
     }
 

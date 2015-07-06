@@ -32,13 +32,11 @@ public class TeacherActivity extends ActionBarActivity
     private static boolean FileIsExist = false;
     private Lesson[] lessons;
 
-    private Toast toast;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
+        setTitle(getIntent().getExtras().getString("TeacherName"));
 
         llWeek1 = (LinearLayout)findViewById(R.id.week1);
         llWeek2 = (LinearLayout)findViewById(R.id.week2);
@@ -48,28 +46,7 @@ public class TeacherActivity extends ActionBarActivity
         String path = "lessons" + teacherId + ".json";
 
         helper = new JsonHelper(path, getApplicationContext());
-
-        try {
-            if (helper.FileIsExist()) {
-                onJsonDownloaded(helper.GetDataFromFile());
-
-            } else if(helper.IsNetworkConnected()) {
-                toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
-                toast.show();
-                new JsonDownloadTask(url, this)
-                        .execute();
-            }
-            else {
-                toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
-                toast.show();
-            }
-
-        }
-        catch (Exception ex)
-        {
-            toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
-            toast.show();
-        }
+        helper.DownloadJson(url, this);
     }
 
     @Override
@@ -111,7 +88,7 @@ public class TeacherActivity extends ActionBarActivity
         }
         else
         {
-            toast = Toast.makeText(getApplicationContext(), "Пар нет", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "Пар нет", Toast.LENGTH_LONG);
             toast.show();
         }
     }
@@ -127,7 +104,7 @@ public class TeacherActivity extends ActionBarActivity
 
         TextView dayOfWeek = new TextView(this);
         dayOfWeek.setText(getDayOfWeek(dayLessons[0].DayOfWeek));
-        dayOfWeek.setTextSize(18);
+        dayOfWeek.setTextSize(20);
         dayOfWeek.setTypeface(Typeface.DEFAULT_BOLD);
         dayOfWeek.setLayoutParams(layParams);
         layout.addView(dayOfWeek);
@@ -135,8 +112,8 @@ public class TeacherActivity extends ActionBarActivity
         for (Lesson lesson : dayLessons) {
             TextView lessonNumber = new TextView(this);
             lessonNumber.setText(getLessonNumber(lesson.Number));
-            lessonNumber.setTypeface(Typeface.DEFAULT_BOLD);
             lessonNumber.setTextSize(16);
+            lessonNumber.setTypeface(Typeface.DEFAULT_BOLD);
             lessonNumber.setPadding(10, 0, 0, 0);
             lessonNumber.setLayoutParams(layParams);
             layout.addView(lessonNumber);
@@ -151,7 +128,7 @@ public class TeacherActivity extends ActionBarActivity
             TextView lessonName = new TextView(this);
             lessonName.setText(lesson.Name);
             lessonName.setTextSize(16);
-            lessonName.setPadding(13, 0, 0, 0);
+            lessonName.setPadding(13, 0, 0, 8);
             lessonName.setLayoutParams(layParams);
             layout.addView(lessonName);
         }

@@ -19,15 +19,17 @@ import java.util.ArrayList;
 import Helpers.JsonDownloadTask;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
+import Models.Cathedra;
 import Models.Teacher;
 
 
 public class FacultyActivity extends ActionBarActivity implements OnJsonDownloadedListener, OnItemClickListener{
 
-    private ListView lvFacultyTeachers;
-    private ArrayList<Teacher> facultyTeachers;
-    private ArrayAdapter<Teacher> adapter;
+    private ListView lvFacultyCathedries;
+    private ArrayList<Cathedra> facultyCathedries;
+    private ArrayAdapter<Cathedra> adapter;
     private JsonHelper helper;
+    private int facultyId;
 
     private static boolean FileIsExist = false;
 
@@ -35,36 +37,17 @@ public class FacultyActivity extends ActionBarActivity implements OnJsonDownload
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty);
+        setTitle(getIntent().getExtras().getString("FacultyName"));
 
-        lvFacultyTeachers = (ListView) findViewById(R.id.lvFacultyTeachers);
+        lvFacultyCathedries = (ListView) findViewById(R.id.lvFacultyCathedries);
+        lvFacultyCathedries.setOnItemClickListener(this);
 
-        int facultyId = getIntent().getExtras().getInt("FacultyId");
-        String url = "http://ulstuschedule.azurewebsites.net/api/faculties/" + facultyId;
-        String path = "Cathedra" + facultyId + ".json";
+        facultyId = getIntent().getExtras().getInt("FacultyId");
+        String url = "http://ulstuschedule.azurewebsites.net/api/faculties?facultyId=" + facultyId;
+        String path = "Cathedries" + facultyId + ".json";
 
-        helper = new JsonHelper(path, getApplicationContext());
-
-        try {
-            if (helper.FileIsExist()) {
-                onJsonDownloaded(helper.GetDataFromFile());
-
-            } else if(helper.IsNetworkConnected()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
-                toast.show();
-                new JsonDownloadTask(url, this).execute();
-            }
-            else {
-                Toast toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }
-        catch (Exception ex)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
-            toast.show();
-        }
-
-        lvFacultyTeachers.setOnItemClickListener(this);
+        helper = new JsonHelper(path, this);
+        helper.DownloadJson(url, this);
     }
 
     @Override
@@ -91,8 +74,10 @@ public class FacultyActivity extends ActionBarActivity implements OnJsonDownload
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, TeacherActivity.class);
-        intent.putExtra("TeacherId", facultyTeachers.get(position).Id);
+        Intent intent = new Intent(this, CathedraOfFacultyActivity.class);
+        intent.putExtra("CathedraId", facultyCathedries.get(position).Id);
+        intent.putExtra("CathedraName", facultyCathedries.get(position).Name);
+        intent.putExtra("FacultyId", facultyId);
         startActivity(intent);
     }
 
@@ -102,8 +87,8 @@ public class FacultyActivity extends ActionBarActivity implements OnJsonDownload
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        facultyTeachers = helper.GetListOfModels(data, new Teacher());
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, facultyTeachers);
-        lvFacultyTeachers.setAdapter(adapter);
+        facultyCathedries = helper.GetListOfModels(data, new Cathedra());
+        adapter = new ArrayAdapter<>(this, R.layout.list_item, facultyCathedries);
+        lvFacultyCathedries.setAdapter(adapter);
     }
 }

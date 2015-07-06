@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Models.Faculty;
 import Models.IJsonInterface;
 
@@ -112,5 +113,27 @@ public class JsonHelper<T extends IJsonInterface<T>> {
             return false;
         else
             return true;
+    }
+
+    public void DownloadJson(String url, OnJsonDownloadedListener listener){
+        try {
+            if (FileIsExist()) {
+                listener.onJsonDownloaded(GetDataFromFile());
+
+            } else if(IsNetworkConnected()) {
+                Toast toast = Toast.makeText(_context, "loading...", Toast.LENGTH_LONG);
+                toast.show();
+                new JsonDownloadTask(url, listener).execute();
+            }
+            else {
+                Toast toast = Toast.makeText(_context, "Not connected to net", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast toast = Toast.makeText(_context, ex.toString(), Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity {
 
     private ListView lvSections;
-    private Button load_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, sections);
         lvSections.setAdapter(adapter);
 
-        lvSections.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvSections.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView) view;

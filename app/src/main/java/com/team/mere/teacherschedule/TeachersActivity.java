@@ -46,28 +46,7 @@ public class TeachersActivity extends ActionBarActivity
 
         lvTeachers.setOnItemClickListener(this);
         helper = new JsonHelper(path, getApplicationContext());
-
-        try {
-            if (helper.FileIsExist()) {
-                onJsonDownloaded(helper.GetDataFromFile());
-
-            } else if(helper.IsNetworkConnected()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
-                toast.show();
-                new JsonDownloadTask(url, this)
-                        .execute();
-            }
-            else {
-                Toast toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
-                toast.show();
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
-            toast.show();
-        }
+        helper.DownloadJson(url, this);
     }
 
     @Override
@@ -99,7 +78,7 @@ public class TeachersActivity extends ActionBarActivity
             FileIsExist = true;
         }
         teachers = helper.GetListOfModels(data, new Teacher());
-        adapter = new ArrayAdapter<Teacher>(this, R.layout.list_item, teachers);
+        adapter = new ArrayAdapter<>(this, R.layout.list_item, teachers);
         lvTeachers.setAdapter(adapter);
     }
 
@@ -107,6 +86,7 @@ public class TeachersActivity extends ActionBarActivity
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(getApplicationContext(), TeacherActivity.class);
         intent.putExtra("TeacherId", teachers.get(position).Id);
+        intent.putExtra("TeacherName", teachers.get(position).Name);
         startActivity(intent);
     }
 }

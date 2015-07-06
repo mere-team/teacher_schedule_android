@@ -36,35 +36,16 @@ public class CathedraActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cathedra);
+        setTitle(getIntent().getExtras().getString("CathedraName"));
         lvCathedraTeachers = (ListView) findViewById(R.id.lvCathedraTeachers);
+        lvCathedraTeachers.setOnItemClickListener(this);
 
         int cathedraId = getIntent().getExtras().getInt("CathedraId");
         String url = "http://ulstuschedule.azurewebsites.net/api/cathedries/" + cathedraId;
         String path = "Cathedra" + cathedraId + ".json";
 
-        helper = new JsonHelper(path, getApplicationContext());
-
-        try {
-            if (helper.FileIsExist()) {
-                onJsonDownloaded(helper.GetDataFromFile());
-
-            } else if(helper.IsNetworkConnected()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_LONG);
-                toast.show();
-                new JsonDownloadTask(url, this).execute();
-            }
-            else {
-                Toast toast = Toast.makeText(getApplicationContext(), "Not connected to net", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }
-        catch (Exception ex)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG);
-            toast.show();
-        }
-
-        lvCathedraTeachers.setOnItemClickListener(this);
+        helper = new JsonHelper(path, this);
+        helper.DownloadJson(url, this);
     }
 
     @Override
@@ -104,6 +85,7 @@ public class CathedraActivity extends ActionBarActivity
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(getApplicationContext(), TeacherActivity.class);
         intent.putExtra("TeacherId", cathedraTeachers.get(position).Id);
+        intent.putExtra("TeacherName", cathedraTeachers.get(position).Name);
         startActivity(intent);
     }
 }
