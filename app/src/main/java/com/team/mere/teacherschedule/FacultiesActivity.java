@@ -3,25 +3,16 @@ package com.team.mere.teacherschedule;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import Helpers.JsonDownloadTask;
@@ -35,6 +26,10 @@ public class FacultiesActivity extends ActionBarActivity
     private ListView lvFaculties;
     private ArrayList<Faculty> faculties;
     private ArrayAdapter<Faculty> adapter;
+
+    private ArrayList<TextView> facultiesViews;
+    private ArrayAdapter<TextView> viewsAdapter;
+
 
     private String url = "http://ulstuschedule.azurewebsites.net/api/faculties";
     private String path = "faculties.json";
@@ -90,7 +85,10 @@ public class FacultiesActivity extends ActionBarActivity
             FileIsExist = true;
         }
         faculties = helper.GetListOfModels(data, new Faculty());
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, faculties);
+        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, faculties);
+
+
+
         lvFaculties.setAdapter(adapter);
     }
 }

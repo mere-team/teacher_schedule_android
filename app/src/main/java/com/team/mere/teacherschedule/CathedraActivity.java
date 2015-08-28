@@ -10,13 +10,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import Helpers.JsonDownloadTask;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
 import Models.Teacher;
@@ -77,7 +75,7 @@ public class CathedraActivity extends ActionBarActivity
             FileIsExist = true;
         }
         cathedraTeachers = helper.GetListOfModels(data, new Teacher());
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, cathedraTeachers);
+        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedraTeachers);
         lvCathedraTeachers.setAdapter(adapter);
     }
 

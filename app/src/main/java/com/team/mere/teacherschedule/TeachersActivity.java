@@ -10,18 +10,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import Helpers.JsonDownloadTask;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
-import Models.Faculty;
 import Models.Teacher;
 
 
@@ -78,7 +73,7 @@ public class TeachersActivity extends ActionBarActivity
             FileIsExist = true;
         }
         teachers = helper.GetListOfModels(data, new Teacher());
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, teachers);
+        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, teachers);
         lvTeachers.setAdapter(adapter);
     }
 

@@ -78,7 +78,7 @@ public class CathedraOfFacultyActivity extends ActionBarActivity
     @Override
     public void onJsonDownloaded(JSONArray data) {
         facultyCathedraTeachers = helper.GetListOfModels(data, new Teacher());
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, facultyCathedraTeachers);
+        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedraTeachers);
         lvCathedraOfFacultyTeachers.setAdapter(adapter);
     }
 }

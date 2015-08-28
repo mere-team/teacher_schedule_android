@@ -10,17 +10,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import Helpers.JsonDownloadTask;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
 import Models.Cathedra;
-import Models.Faculty;
 
 
 public class CathedriesActivity extends ActionBarActivity
@@ -84,7 +81,7 @@ public class CathedriesActivity extends ActionBarActivity
             FileIsExist = true;
         }
         cathedries = helper.GetListOfModels(data, new Cathedra());
-        adapter = new ArrayAdapter<>(this, R.layout.list_item, cathedries);
+        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);
         lvCathedries.setAdapter(adapter);
     }
 }

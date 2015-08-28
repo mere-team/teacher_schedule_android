@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">Расписание преподавателей</string>
+    <string name="app_name">Расписание УлГТУ</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Параметры</string>
 
-    <string name="list_faculties">Список факультетов</string>
-    <string name="list_cathedries">Список кафедр</string>
-    <string name="list_teachers">Список преподователей</string>
+    <string name="list_faculties">Факультеты</string>
+    <string name="list_cathedries">Кафедры</string>
+    <string name="list_teachers">Преподаватели</string>
 
     <string name="title_activity_faculties">Факультеты</string>
     <string name="title_activity_faculty">Факультет: </string>
