@@ -14,6 +14,7 @@
     <string name="title_activity_cathedries">Кафедры</string>
     <string name="title_activity_cathedra">Кафедра: </string>
     <string name="title_activity_cathedra_of_faculty">Кафедры факультета</string>
+    <string name="section_list_title">Разделы</string>
 
     <string-array name="daysOfWeek">
         <item>Понедельник</item>
