@@ -2,6 +2,9 @@
     <string name="app_name">Расписание УлГТУ</string>
 
     <string name="action_settings">Параметры</string>
+    <string name="search_field_placeholder">Поиск...</string>
+    <string name="bookmarks_title">Закладки</string>
+    <string name="sections_title">Разделы</string>
 
     <string name="list_faculties">Факультеты</string>
     <string name="list_cathedries">Кафедры</string>
@@ -14,7 +17,6 @@
     <string name="title_activity_cathedries">Кафедры</string>
     <string name="title_activity_cathedra">Кафедра: </string>
     <string name="title_activity_cathedra_of_faculty">Кафедры факультета</string>
-    <string name="section_list_title">Разделы</string>
 
     <string-array name="daysOfWeek">
         <item>Понедельник</item>
