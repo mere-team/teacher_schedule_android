@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,13 +27,15 @@ import Models.Section;
 public class MainActivity extends AppCompatActivity {
 
     private ListView lvSections;
+    private EditText etMainSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         lvSections = (ListView) findViewById(R.id.lvSections);
+        etMainSearch = (EditText) findViewById(R.id.etMainSearch);
+
         ArrayList<Section> sections = new ArrayList<>();
         sections.add(new Section(new ImageView(this), getResources().getString(R.string.list_faculties)));
         sections.add(new Section(new ImageView(this), getResources().getString(R.string.list_cathedries)));
@@ -79,4 +83,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onFabMainSearchClick(View view) {
+        InputMethodManager imm =  (InputMethodManager) getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etMainSearch, InputMethodManager.SHOW_IMPLICIT);
+    }
 }
