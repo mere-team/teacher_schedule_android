@@ -66,7 +66,7 @@ public class JsonDownloadTask extends AsyncTask<String, Void, String> {
             c.connect();
             reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
             StringBuilder buf = new StringBuilder();
-            String line = null;
+            String line;
             while((line = reader.readLine()) != null){
                 buf.append(line);
             }

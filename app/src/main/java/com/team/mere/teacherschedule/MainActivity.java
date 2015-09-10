@@ -1,5 +1,6 @@
 package com.team.mere.teacherschedule;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onFabMainSearchClick(View view) {
-        InputMethodManager imm =  (InputMethodManager) getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
+        InputMethodManager imm =  (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.showSoftInput(etMainSearch, InputMethodManager.SHOW_IMPLICIT);
     }
 }

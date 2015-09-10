@@ -3,6 +3,7 @@ package com.team.mere.teacherschedule;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,13 +15,14 @@ import android.widget.TextView;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.prefs.AbstractPreferences;
 
 import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
 import Models.Faculty;
 
 
-public class FacultiesActivity extends ActionBarActivity
+public class FacultiesActivity extends AppCompatActivity
         implements JsonDownloadTask.OnJsonDownloadedListener, AdapterView.OnItemClickListener {
 
     private ListView lvFaculties;
@@ -86,8 +88,6 @@ public class FacultiesActivity extends ActionBarActivity
         }
         faculties = helper.GetListOfModels(data, new Faculty());
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, faculties);
-
-
 
         lvFaculties.setAdapter(adapter);
     }
