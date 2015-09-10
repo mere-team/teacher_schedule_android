@@ -98,6 +98,12 @@ public class AsyncTaskJsonLoader extends Loader<JSONArray> {
         protected void onProgressUpdate(Void... items){
         }
 
+        @Override
+        protected void onPostExecute(String json){
+            Log.d(LOG_TAG, "JsonDownloadTask completed");
+            getResultFromTask(json);
+        }
+
         private String getContent(String path) throws IOException{
             BufferedReader reader = null;
             try{

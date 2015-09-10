@@ -46,8 +46,8 @@ public class FacultiesActivity extends AppCompatActivity
         lvFaculties = (ListView) findViewById(R.id.lvFaculties);
         lvFaculties.setOnItemClickListener(this);
 
-        helper = new JsonHelper(path, getApplicationContext());
-        helper.DownloadJson(url, this);
+        //helper = new JsonHelper(path, getApplicationContext());
+        //helper.DownloadJson(url, this);
     }
 
     @Override
