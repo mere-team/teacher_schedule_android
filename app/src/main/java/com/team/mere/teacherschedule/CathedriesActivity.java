@@ -16,6 +16,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
+import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
 import Models.Cathedra;
@@ -83,7 +84,7 @@ public class CathedriesActivity extends AppCompatActivity
         }
         try {
             cathedries = helper.GetListOfModels(data, new Cathedra());
-        } catch (JsonHelper.JsonDownloadException e) {
+        } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }

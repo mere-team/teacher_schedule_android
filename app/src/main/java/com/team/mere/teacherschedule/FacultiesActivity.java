@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.prefs.AbstractPreferences;
 
 import Helpers.AsyncTaskJsonLoader;
+import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
 import Models.Faculty;
@@ -109,7 +110,7 @@ public class FacultiesActivity extends AppCompatActivity
         }
         try {
             faculties = helper.GetListOfModels(data, new Faculty());
-        } catch (JsonHelper.JsonDownloadException e) {
+        } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }
@@ -131,7 +132,7 @@ public class FacultiesActivity extends AppCompatActivity
         }
         try {
             faculties = helper.GetListOfModels(data, new Faculty());
-        } catch (JsonHelper.JsonDownloadException e) {
+        } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }

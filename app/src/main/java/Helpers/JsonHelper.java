@@ -35,7 +35,7 @@ public class JsonHelper<T extends IJsonInterface<T>> {
     public void SaveJsonToFile(JSONArray data)
     {
         try {
-            FileOutputStream fOut = _context.openFileOutput(_path, _context.MODE_WORLD_READABLE);
+            FileOutputStream fOut = _context.openFileOutput(_path, Context.MODE_WORLD_READABLE);
             OutputStreamWriter osw = new OutputStreamWriter(fOut);
             osw.write(data.toString());
             osw.flush();
@@ -52,7 +52,7 @@ public class JsonHelper<T extends IJsonInterface<T>> {
 
     public JSONArray GetDataFromFile()
     {
-        String readString = null;
+        String readString;
         JSONArray array = null;
 
         try
@@ -109,12 +109,9 @@ public class JsonHelper<T extends IJsonInterface<T>> {
     }
 
     public boolean IsNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) _context.getSystemService(_context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null)
-            return false;
-        else
-            return true;
+        return ni != null;
     }
 
     public void DownloadJson(String url, OnJsonDownloadedListener listener){
@@ -139,9 +136,5 @@ public class JsonHelper<T extends IJsonInterface<T>> {
         }
     }
 
-    public class JsonDownloadException extends Exception{
-        public JsonDownloadException(){
-            super("Json file not downloaded");
-        }
-    }
+
 }

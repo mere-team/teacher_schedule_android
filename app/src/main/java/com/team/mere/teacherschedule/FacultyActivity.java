@@ -15,6 +15,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
+import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
 import Models.Cathedra;
@@ -94,7 +95,7 @@ public class FacultyActivity extends AppCompatActivity
 
         try {
             facultyCathedries = helper.GetListOfModels(data, new Cathedra());
-        } catch (JsonHelper.JsonDownloadException e) {
+        } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }

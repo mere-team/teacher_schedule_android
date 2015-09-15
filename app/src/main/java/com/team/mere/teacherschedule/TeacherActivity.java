@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
 import Models.Faculty;
@@ -72,10 +73,10 @@ public class TeacherActivity extends AppCompatActivity
             FileIsExist = true;
         }
 
-        ArrayList<Lesson> lessonsData = null;
+        ArrayList<Lesson> lessonsData;
         try {
             lessonsData = helper.GetListOfModels(data, new Lesson());
-        } catch (JsonHelper.JsonDownloadException e) {
+        } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }
