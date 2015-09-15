@@ -94,8 +94,9 @@ public class JsonHelper<T extends IJsonInterface<T>> {
         }
     }
 
-    public ArrayList<T> GetListOfModels(JSONArray data, T obj)
-    {
+    public ArrayList<T> GetListOfModels(JSONArray data, T obj) throws JsonDownloadException {
+        if (data == null)
+            throw new JsonDownloadException();
         ArrayList<T> array = new ArrayList<>(data.length());
 
         for (int i = 0; i < data.length(); i++){
@@ -135,6 +136,12 @@ public class JsonHelper<T extends IJsonInterface<T>> {
         {
             Toast toast = Toast.makeText(_context, ex.toString(), Toast.LENGTH_LONG);
             toast.show();
+        }
+    }
+
+    public class JsonDownloadException extends Exception{
+        public JsonDownloadException(){
+            super("Json file not downloaded");
         }
     }
 }

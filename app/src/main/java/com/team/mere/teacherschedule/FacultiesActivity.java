@@ -107,7 +107,12 @@ public class FacultiesActivity extends AppCompatActivity
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        faculties = helper.GetListOfModels(data, new Faculty());
+        try {
+            faculties = helper.GetListOfModels(data, new Faculty());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, faculties);
 
         lvFaculties.setAdapter(adapter);
@@ -124,7 +129,12 @@ public class FacultiesActivity extends AppCompatActivity
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        faculties = helper.GetListOfModels(data, new Faculty());
+        try {
+            faculties = helper.GetListOfModels(data, new Faculty());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, faculties);
 
         lvFaculties.setAdapter(adapter);

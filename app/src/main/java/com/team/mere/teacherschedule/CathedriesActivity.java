@@ -81,7 +81,12 @@ public class CathedriesActivity extends AppCompatActivity
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        cathedries = helper.GetListOfModels(data, new Cathedra());
+        try {
+            cathedries = helper.GetListOfModels(data, new Cathedra());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);
         lvCathedries.setAdapter(adapter);
     }

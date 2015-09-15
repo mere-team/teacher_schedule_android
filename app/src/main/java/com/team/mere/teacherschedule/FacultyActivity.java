@@ -87,11 +87,17 @@ public class FacultyActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
-        if(!FileIsExist) {
+        if(!FileIsExist && data != null) {
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        facultyCathedries = helper.GetListOfModels(data, new Cathedra());
+
+        try {
+            facultyCathedries = helper.GetListOfModels(data, new Cathedra());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedries);
         lvFacultyCathedries.setAdapter(adapter);
     }

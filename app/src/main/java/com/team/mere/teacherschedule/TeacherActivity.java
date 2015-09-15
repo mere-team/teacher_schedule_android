@@ -72,7 +72,13 @@ public class TeacherActivity extends AppCompatActivity
             FileIsExist = true;
         }
 
-        ArrayList<Lesson> lessonsData = helper.GetListOfModels(data, new Lesson());
+        ArrayList<Lesson> lessonsData = null;
+        try {
+            lessonsData = helper.GetListOfModels(data, new Lesson());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
 
         if(lessonsData.size() != 0)
         {

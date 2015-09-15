@@ -78,7 +78,12 @@ public class CathedraOfFacultyActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
-        facultyCathedraTeachers = helper.GetListOfModels(data, new Teacher());
+        try {
+            facultyCathedraTeachers = helper.GetListOfModels(data, new Teacher());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedraTeachers);
         lvCathedraOfFacultyTeachers.setAdapter(adapter);
     }

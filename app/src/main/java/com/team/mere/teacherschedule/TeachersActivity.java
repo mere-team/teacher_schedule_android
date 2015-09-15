@@ -73,7 +73,12 @@ public class TeachersActivity extends AppCompatActivity
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        teachers = helper.GetListOfModels(data, new Teacher());
+        try {
+            teachers = helper.GetListOfModels(data, new Teacher());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, teachers);
         lvTeachers.setAdapter(adapter);
     }

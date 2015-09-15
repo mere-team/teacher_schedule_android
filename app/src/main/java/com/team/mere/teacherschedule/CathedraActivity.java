@@ -75,7 +75,12 @@ public class CathedraActivity extends AppCompatActivity
             helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-        cathedraTeachers = helper.GetListOfModels(data, new Teacher());
+        try {
+            cathedraTeachers = helper.GetListOfModels(data, new Teacher());
+        } catch (JsonHelper.JsonDownloadException e) {
+            e.printStackTrace();
+            return;
+        }
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedraTeachers);
         lvCathedraTeachers.setAdapter(adapter);
     }

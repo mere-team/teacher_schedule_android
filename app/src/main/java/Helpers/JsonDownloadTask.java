@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -56,25 +58,36 @@ public class JsonDownloadTask extends AsyncTask<String, Void, String> {
 
     }
 
-    private String getContent(String path) throws IOException{
+    private String getContent(String url) throws IOException{
         BufferedReader reader = null;
-        try{
-            URL url = new URL(path);
-            HttpURLConnection c = (HttpURLConnection) url.openConnection();
-            c.setRequestMethod("GET");
-            c.setReadTimeout(4000);
-            c.connect();
-            reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
-            StringBuilder buf = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null){
-                buf.append(line);
+
+        URL content_url = new URL(url);
+        HttpURLConnection c = (HttpURLConnection) content_url.openConnection();
+        c.setRequestMethod("GET");
+        c.setReadTimeout(4000);
+
+        String result = "";
+
+        for (int i = 0; i < 2; i++) {
+            if (!result.isEmpty())
+                return result;
+            try {
+                c.connect();
+                reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
+                StringBuilder buf = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buf.append(line);
+                }
+                result = buf.toString();
+            } catch (Exception ex) {
+                continue;
+            } finally {
+                c.disconnect();
+                if (reader != null)
+                    reader.close();
             }
-            return buf.toString();
         }
-        finally {
-            if (reader != null)
-                reader.close();
-        }
+        return result;
     }
 }
