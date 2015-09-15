@@ -3,6 +3,7 @@ package Helpers;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -123,7 +124,7 @@ public class JsonHelper<T extends IJsonInterface<T>> {
             } else if(IsNetworkConnected()) {
                 Toast toast = Toast.makeText(_context, "loading...", Toast.LENGTH_LONG);
                 toast.show();
-                new JsonDownloadTask(url, listener).execute();
+                new JsonDownloadTask(url, listener).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
             else {
                 Toast toast = Toast.makeText(_context, "Not connected to net", Toast.LENGTH_LONG);

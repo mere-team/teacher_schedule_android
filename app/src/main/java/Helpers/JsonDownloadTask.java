@@ -62,7 +62,7 @@ public class JsonDownloadTask extends AsyncTask<String, Void, String> {
             URL url = new URL(path);
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
             c.setRequestMethod("GET");
-            c.setReadTimeout(10000);
+            c.setReadTimeout(4000);
             c.connect();
             reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
             StringBuilder buf = new StringBuilder();

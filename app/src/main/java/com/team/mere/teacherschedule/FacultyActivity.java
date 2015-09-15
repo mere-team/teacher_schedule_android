@@ -1,9 +1,6 @@
 package com.team.mere.teacherschedule;
 
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -18,15 +15,14 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import Helpers.AsyncJsonLoader;
 import Helpers.JsonDownloadTask;
-import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
 import Models.Cathedra;
 
 
 public class FacultyActivity extends AppCompatActivity
-        implements OnItemClickListener, LoaderManager.LoaderCallbacks<JSONArray>{
+        implements OnItemClickListener,
+        JsonDownloadTask.OnJsonDownloadedListener {
 
     private ListView lvFacultyCathedries;
     private ArrayList<Cathedra> facultyCathedries;
@@ -52,10 +48,10 @@ public class FacultyActivity extends AppCompatActivity
         _url = "http://ulstuschedule.azurewebsites.net/api/faculties?facultyId=" + facultyId;
         String path = "Cathedries" + facultyId + ".json";
 
-        //helper = new JsonHelper(path, this);
-        //helper.DownloadJson(_url, this);
+        helper = new JsonHelper(path, this);
+        helper.DownloadJson(_url, this);
 
-        getLoaderManager().initLoader(JSON_LOADER_ID, null, this);
+        //getLoaderManager().initLoader(JSON_LOADER_ID, null, this);
     }
 
     @Override
@@ -89,38 +85,38 @@ public class FacultyActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-//    @Override
-//    public void onJsonDownloaded(JSONArray data) {
-////        if(!FileIsExist) {
-////            helper.SaveJsonToFile(data);
-////            FileIsExist = true;
-////        }
-////        facultyCathedries = helper.GetListOfModels(data, new Cathedra());
-////        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedries);
-////        lvFacultyCathedries.setAdapter(adapter);
-//    }
-
     @Override
-    public Loader<JSONArray> onCreateLoader(int i, Bundle bundle) {
-        AsyncJsonLoader loader = new AsyncJsonLoader(this, _url);
-        loader.loadInBackground();
-        return loader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<JSONArray> loader, JSONArray jsonArray) {
+    public void onJsonDownloaded(JSONArray data) {
         if(!FileIsExist) {
-            helper.SaveJsonToFile(jsonArray);
+            helper.SaveJsonToFile(data);
             FileIsExist = true;
         }
-
-        facultyCathedries = helper.GetListOfModels(jsonArray, new Cathedra());
+        facultyCathedries = helper.GetListOfModels(data, new Cathedra());
         adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedries);
         lvFacultyCathedries.setAdapter(adapter);
     }
 
-    @Override
-    public void onLoaderReset(Loader<JSONArray> loader) {
-        adapter.clear();
-    }
+//    @Override
+//    public Loader<JSONArray> onCreateLoader(int i, Bundle bundle) {
+//        AsyncJsonLoader loader = new AsyncJsonLoader(this, _url);
+//        loader.loadInBackground();
+//        return loader;
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<JSONArray> loader, JSONArray jsonArray) {
+//        if(!FileIsExist) {
+//            helper.SaveJsonToFile(jsonArray);
+//            FileIsExist = true;
+//        }
+//
+//        facultyCathedries = helper.GetListOfModels(jsonArray, new Cathedra());
+//        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedries);
+//        lvFacultyCathedries.setAdapter(adapter);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<JSONArray> loader) {
+//        adapter.clear();
+//    }
 }

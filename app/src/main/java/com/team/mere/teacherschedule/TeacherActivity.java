@@ -3,6 +3,7 @@ package com.team.mere.teacherschedule;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -23,7 +24,7 @@ import Models.Lesson;
 import static Helpers.JsonDownloadTask.*;
 
 
-public class TeacherActivity extends ActionBarActivity
+public class TeacherActivity extends AppCompatActivity
        implements OnJsonDownloadedListener {
 
     private LinearLayout llWeek1;
