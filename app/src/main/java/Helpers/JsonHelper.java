@@ -116,12 +116,11 @@ public class JsonHelper<T extends IJsonInterface<T>> {
 
     public void DownloadJson(String url, OnJsonDownloadedListener listener){
         try {
-            if (FileIsExist()) {
-                listener.onJsonDownloaded(GetDataFromFile());
-
-            } else if(IsNetworkConnected()) {
-                Toast toast = Toast.makeText(_context, "loading...", Toast.LENGTH_LONG);
-                toast.show();
+//            if (FileIsExist()) {
+//                listener.onJsonDownloaded(GetDataFromFile());
+//
+//            } else
+            if(IsNetworkConnected()) {
                 new JsonDownloadTask(url, listener).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
             else {

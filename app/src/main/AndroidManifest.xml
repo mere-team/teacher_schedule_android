@@ -45,7 +45,7 @@
             android:label="@string/title_activity_cathedra" >
         </activity>
         <activity
-            android:name=".CathedraOfFacultyActivity"
+            android:name=".CathedriesOfFacultyActivity"
             android:label="@string/title_activity_cathedra_of_faculty">
         </activity>
     </application>

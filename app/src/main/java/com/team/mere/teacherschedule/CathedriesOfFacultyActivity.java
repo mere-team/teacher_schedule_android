@@ -19,16 +19,19 @@ import java.util.ArrayList;
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
+import Helpers.LoadingIndicator;
 import Models.Teacher;
 
 
-public class CathedraOfFacultyActivity extends AppCompatActivity
+public class CathedriesOfFacultyActivity extends AppCompatActivity
         implements OnItemClickListener, OnJsonDownloadedListener{
 
     private ListView lvCathedraOfFacultyTeachers;
     private ArrayList<Teacher> facultyCathedraTeachers;
     private ArrayAdapter<Teacher> adapter;
     private JsonHelper helper;
+
+    private LoadingIndicator _loadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class CathedraOfFacultyActivity extends AppCompatActivity
         String url = "http://ulstuschedule.azurewebsites.net/api/faculties?facultyId=" + facultyId
                 + "&cathedraId=" + cathedraId;
         String path = "CathedraOfFaculty" + facultyId + ".json";
+
+        _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.cathedra_loading));
+        _loadingIndicator.show();
 
         helper = new JsonHelper(path, getApplicationContext());
         helper.DownloadJson(url, this);
@@ -79,6 +85,8 @@ public class CathedraOfFacultyActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
+        _loadingIndicator.close();
+
         try {
             facultyCathedraTeachers = helper.GetListOfModels(data, new Teacher());
         } catch (JsonDownloadException e) {

@@ -25,6 +25,7 @@ import Helpers.AsyncTaskJsonLoader;
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
+import Helpers.LoadingIndicator;
 import Models.Faculty;
 
 
@@ -39,9 +40,10 @@ public class FacultiesActivity extends AppCompatActivity
     private ListView lvFaculties;
     private ArrayList<Faculty> faculties;
     private ArrayAdapter<Faculty> adapter;
+    private LoadingIndicator _loadingIndicator;
 
     private String _url = "http://ulstuschedule.azurewebsites.net/api/faculties";
-    private String path = "faculties1.json";
+    private String path = "faculties2.json";
     private JsonHelper helper;
 
     private static boolean FileIsExist = false;
@@ -52,6 +54,9 @@ public class FacultiesActivity extends AppCompatActivity
         setContentView(R.layout.activity_faculties);
         lvFaculties = (ListView) findViewById(R.id.lvFaculties);
         lvFaculties.setOnItemClickListener(this);
+
+        _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.faculties_loading));
+        _loadingIndicator.show();
 
         helper = new JsonHelper(path, getApplicationContext());
         helper.DownloadJson(_url, this);
@@ -126,6 +131,7 @@ public class FacultiesActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data){
+        _loadingIndicator.close();
         if(!FileIsExist) {
             helper.SaveJsonToFile(data);
             FileIsExist = true;

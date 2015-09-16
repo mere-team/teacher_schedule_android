@@ -2,9 +2,17 @@
     <string name="app_name">Расписание УлГТУ</string>
 
     <string name="action_settings">Параметры</string>
-    <string name="search_field_placeholder">Поиск...</string>
+    <string name="search_field_placeholder">Поиск…</string>
     <string name="bookmarks_title">Закладки</string>
     <string name="sections_title">Разделы</string>
+
+    <string name="faculties_loading">Загрузка списка факультетов…</string>
+    <string name="cathedries_loading">Загрузка списка кафедр…</string>
+    <string name="cathedra_loading">Загрузка списка преподавателей кафедры…</string>
+    <string name="faculty_loading">Загрузка списка кафедр факультета…</string>
+    <string name="teachers_loading">Загрузка списка преподавателей…</string>
+    <string name="teacher_loading">Загрузка расписания…</string>
+
 
     <string name="list_faculties">Факультеты</string>
     <string name="list_cathedries">Кафедры</string>
@@ -43,4 +51,5 @@
         <item>1 неделя</item>
         <item>2 неделя</item>
     </string-array>
+
 </resources>

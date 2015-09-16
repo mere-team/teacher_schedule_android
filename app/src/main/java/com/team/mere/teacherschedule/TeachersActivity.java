@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
+import Helpers.LoadingIndicator;
 import Models.Teacher;
 
 
@@ -33,6 +34,8 @@ public class TeachersActivity extends AppCompatActivity
     private String path = "teachers.json";
     private JsonHelper helper;
 
+    private LoadingIndicator _loadingIndicator;
+
     private static boolean FileIsExist = false;
 
     @Override
@@ -40,8 +43,11 @@ public class TeachersActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers);
         lvTeachers = (ListView) findViewById(R.id.lvTeachers);
-
         lvTeachers.setOnItemClickListener(this);
+
+        _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.teachers_loading));
+        _loadingIndicator.show();
+
         helper = new JsonHelper(path, getApplicationContext());
         helper.DownloadJson(url, this);
     }
@@ -70,6 +76,8 @@ public class TeachersActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
+        _loadingIndicator.close();
+
         if(!FileIsExist) {
             helper.SaveJsonToFile(data);
             FileIsExist = true;

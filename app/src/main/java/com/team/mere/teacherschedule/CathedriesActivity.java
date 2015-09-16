@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
+import Helpers.LoadingIndicator;
 import Models.Cathedra;
 
 
@@ -33,6 +34,8 @@ public class CathedriesActivity extends AppCompatActivity
     private String path = "cathedra.json";
     private JsonHelper helper;
 
+    private LoadingIndicator _loadingIndicator;
+
     private static boolean FileIsExist = false;
 
     @Override
@@ -41,6 +44,9 @@ public class CathedriesActivity extends AppCompatActivity
         setContentView(R.layout.activity_cathedries);
         lvCathedries = (ListView) findViewById(R.id.lvCathdries);
         lvCathedries.setOnItemClickListener(this);
+
+        _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.cathedries_loading));
+        _loadingIndicator.show();
 
         helper = new JsonHelper(path, this);
         helper.DownloadJson(url, this);
@@ -78,6 +84,8 @@ public class CathedriesActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
+        _loadingIndicator.close();
+
         if(!FileIsExist) {
             helper.SaveJsonToFile(data);
             FileIsExist = true;

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
+import Helpers.LoadingIndicator;
 import Models.Cathedra;
 
 
@@ -30,7 +31,9 @@ public class FacultyActivity extends AppCompatActivity
     private ArrayAdapter<Cathedra> adapter;
     private JsonHelper helper;
     private int facultyId;
-    String _url;
+    private String _url;
+
+    private LoadingIndicator _loadingIndicator;
 
     private static final int JSON_LOADER_ID = 1;
 
@@ -48,6 +51,9 @@ public class FacultyActivity extends AppCompatActivity
         facultyId = getIntent().getExtras().getInt("FacultyId");
         _url = "http://ulstuschedule.azurewebsites.net/api/faculties?facultyId=" + facultyId;
         String path = "Cathedries" + facultyId + ".json";
+
+        _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.faculty_loading));
+        _loadingIndicator.show();
 
         helper = new JsonHelper(path, this);
         helper.DownloadJson(_url, this);
@@ -79,7 +85,7 @@ public class FacultyActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, CathedraOfFacultyActivity.class);
+        Intent intent = new Intent(this, CathedriesOfFacultyActivity.class);
         intent.putExtra("CathedraId", facultyCathedries.get(position).Id);
         intent.putExtra("CathedraName", facultyCathedries.get(position).Name);
         intent.putExtra("FacultyId", facultyId);
@@ -88,6 +94,8 @@ public class FacultyActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
+        _loadingIndicator.close();
+
         if(!FileIsExist && data != null) {
             helper.SaveJsonToFile(data);
             FileIsExist = true;

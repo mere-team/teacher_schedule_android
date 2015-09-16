@@ -58,35 +58,27 @@ public class JsonDownloadTask extends AsyncTask<String, Void, String> {
 
     }
 
-    private String getContent(String url) throws IOException{
+    private String getContent(String path) throws IOException{
         BufferedReader reader = null;
-
-        URL content_url = new URL(url);
-        HttpURLConnection c = (HttpURLConnection) content_url.openConnection();
-        c.setRequestMethod("GET");
-        c.setReadTimeout(4000);
-
         String result = "";
 
-        for (int i = 0; i < 2; i++) {
-            if (!result.isEmpty())
-                return result;
-            try {
-                c.connect();
-                reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
-                StringBuilder buf = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buf.append(line);
-                }
-                result = buf.toString();
-            } catch (Exception ex) {
-                continue;
-            } finally {
-                c.disconnect();
-                if (reader != null)
-                    reader.close();
+        URL url = new URL(path);
+        try {
+            HttpURLConnection c = (HttpURLConnection) url.openConnection();
+            c.setRequestMethod("GET");
+            c.setReadTimeout(4000);
+            c.connect();
+            reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
+            StringBuilder buf = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buf.append(line);
             }
+            result = buf.toString();
+        }
+        finally {
+            if (reader != null)
+                reader.close();
         }
         return result;
     }

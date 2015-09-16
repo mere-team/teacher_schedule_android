@@ -19,6 +19,7 @@ import java.util.Arrays;
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
+import Helpers.LoadingIndicator;
 import Models.Faculty;
 import Models.Lesson;
 
@@ -34,6 +35,8 @@ public class TeacherActivity extends AppCompatActivity
     private static boolean FileIsExist = false;
     private Lesson[] lessons;
 
+    private LoadingIndicator _loadingIndicator;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,9 @@ public class TeacherActivity extends AppCompatActivity
         int teacherId = getIntent().getExtras().getInt("TeacherId");
         String url = "http://ulstuschedule.azurewebsites.net/api/teachers/" + teacherId;
         String path = "lessons" + teacherId + ".json";
+
+        _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.teacher_loading));
+        _loadingIndicator.show();
 
         helper = new JsonHelper(path, getApplicationContext());
         helper.DownloadJson(url, this);
@@ -68,6 +74,8 @@ public class TeacherActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
+        _loadingIndicator.close();
+
         if(!FileIsExist) {
             helper.SaveJsonToFile(data);
             FileIsExist = true;
