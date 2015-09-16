@@ -76,6 +76,9 @@ public class JsonDownloadTask extends AsyncTask<String, Void, String> {
             }
             result = buf.toString();
         }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
         finally {
             if (reader != null)
                 reader.close();

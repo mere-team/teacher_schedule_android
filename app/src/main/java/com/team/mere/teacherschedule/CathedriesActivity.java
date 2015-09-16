@@ -28,15 +28,9 @@ public class CathedriesActivity extends AppCompatActivity
 
     private ListView lvCathedries;
     private ArrayList<Cathedra> cathedries;
-    private ArrayAdapter<Cathedra> adapter;
 
-    private String url = "http://ulstuschedule.azurewebsites.net/api/cathedries";
-    private String path = "cathedra.json";
     private JsonHelper helper;
-
     private LoadingIndicator _loadingIndicator;
-
-    private static boolean FileIsExist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +42,8 @@ public class CathedriesActivity extends AppCompatActivity
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.cathedries_loading));
         _loadingIndicator.show();
 
-        helper = new JsonHelper(path, this);
+        helper = new JsonHelper(this);
+        String url = "http://ulstuschedule.azurewebsites.net/api/cathedries";
         helper.DownloadJson(url, this);
     }
 
@@ -86,17 +81,13 @@ public class CathedriesActivity extends AppCompatActivity
     public void onJsonDownloaded(JSONArray data) {
         _loadingIndicator.close();
 
-        if(!FileIsExist) {
-            helper.SaveJsonToFile(data);
-            FileIsExist = true;
-        }
         try {
             cathedries = helper.GetListOfModels(data, new Cathedra());
         } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }
-        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);
+        ArrayAdapter<Cathedra> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);
         lvCathedries.setAdapter(adapter);
     }
 }

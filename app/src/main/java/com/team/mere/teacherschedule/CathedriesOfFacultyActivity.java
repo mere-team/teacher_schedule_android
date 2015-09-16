@@ -28,9 +28,8 @@ public class CathedriesOfFacultyActivity extends AppCompatActivity
 
     private ListView lvCathedraOfFacultyTeachers;
     private ArrayList<Teacher> facultyCathedraTeachers;
-    private ArrayAdapter<Teacher> adapter;
-    private JsonHelper helper;
 
+    private JsonHelper helper;
     private LoadingIndicator _loadingIndicator;
 
     @Override
@@ -45,12 +44,11 @@ public class CathedriesOfFacultyActivity extends AppCompatActivity
         int cathedraId = getIntent().getExtras().getInt("CathedraId");
         String url = "http://ulstuschedule.azurewebsites.net/api/faculties?facultyId=" + facultyId
                 + "&cathedraId=" + cathedraId;
-        String path = "CathedraOfFaculty" + facultyId + ".json";
 
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.cathedra_loading));
         _loadingIndicator.show();
 
-        helper = new JsonHelper(path, getApplicationContext());
+        helper = new JsonHelper(this);
         helper.DownloadJson(url, this);
     }
 
@@ -93,7 +91,7 @@ public class CathedriesOfFacultyActivity extends AppCompatActivity
             e.printStackTrace();
             return;
         }
-        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedraTeachers);
+        ArrayAdapter<Teacher> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, facultyCathedraTeachers);
         lvCathedraOfFacultyTeachers.setAdapter(adapter);
     }
 }

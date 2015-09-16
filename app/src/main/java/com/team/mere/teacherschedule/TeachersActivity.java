@@ -28,15 +28,11 @@ public class TeachersActivity extends AppCompatActivity
 
     private ListView lvTeachers;
     private ArrayList<Teacher> teachers;
-    private ArrayAdapter<Teacher> adapter;
 
     private String url = "http://ulstuschedule.azurewebsites.net/api/teachers";
-    private String path = "teachers.json";
+
     private JsonHelper helper;
-
     private LoadingIndicator _loadingIndicator;
-
-    private static boolean FileIsExist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +44,7 @@ public class TeachersActivity extends AppCompatActivity
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.teachers_loading));
         _loadingIndicator.show();
 
-        helper = new JsonHelper(path, getApplicationContext());
+        helper = new JsonHelper(this);
         helper.DownloadJson(url, this);
     }
 
@@ -78,17 +74,13 @@ public class TeachersActivity extends AppCompatActivity
     public void onJsonDownloaded(JSONArray data) {
         _loadingIndicator.close();
 
-        if(!FileIsExist) {
-            helper.SaveJsonToFile(data);
-            FileIsExist = true;
-        }
         try {
             teachers = helper.GetListOfModels(data, new Teacher());
         } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }
-        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, teachers);
+        ArrayAdapter<Teacher> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, teachers);
         lvTeachers.setAdapter(adapter);
     }
 

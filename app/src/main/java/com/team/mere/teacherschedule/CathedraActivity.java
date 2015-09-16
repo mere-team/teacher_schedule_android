@@ -27,13 +27,10 @@ public class CathedraActivity extends AppCompatActivity
         implements OnJsonDownloadedListener, OnItemClickListener{
 
     private ListView lvCathedraTeachers;
-    private ArrayAdapter<Teacher> adapter;
     private ArrayList<Teacher> cathedraTeachers;
+
     private JsonHelper helper;
-
     private LoadingIndicator _loadingIndicator;
-
-    private static boolean FileIsExist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +42,11 @@ public class CathedraActivity extends AppCompatActivity
 
         int cathedraId = getIntent().getExtras().getInt("CathedraId");
         String url = "http://ulstuschedule.azurewebsites.net/api/cathedries/" + cathedraId;
-        String path = "Cathedra" + cathedraId + ".json";
 
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.cathedra_loading));
         _loadingIndicator.show();
 
-        helper = new JsonHelper(path, this);
+        helper = new JsonHelper(this);
         helper.DownloadJson(url, this);
     }
 
@@ -80,17 +76,13 @@ public class CathedraActivity extends AppCompatActivity
     public void onJsonDownloaded(JSONArray data) {
         _loadingIndicator.close();
 
-        if(!FileIsExist) {
-            helper.SaveJsonToFile(data);
-            FileIsExist = true;
-        }
         try {
             cathedraTeachers = helper.GetListOfModels(data, new Teacher());
         } catch (JsonDownloadException e) {
             e.printStackTrace();
             return;
         }
-        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedraTeachers);
+        ArrayAdapter<Teacher> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedraTeachers);
         lvCathedraTeachers.setAdapter(adapter);
     }
 
