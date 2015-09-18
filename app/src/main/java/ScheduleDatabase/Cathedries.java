@@ -17,6 +17,7 @@ public class Cathedries implements BaseColumns {
     private ScheduleDatabaseHelper _dbHelper;
 
     static final String TABLE_NAME = "cathedra";
+    static final String _ID = "cathedra_id";
     static final String COLUMN_NAME_NAME = "cathedra_name";
 
     static final String SQL_CREATE_CATHEDRIES =

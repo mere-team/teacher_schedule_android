@@ -13,7 +13,6 @@ import android.widget.ListView;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Helpers.JsonDownloadException;
@@ -28,11 +27,10 @@ public class TeachersActivity extends AppCompatActivity
         implements OnJsonDownloadedListener, OnItemClickListener {
 
     private ListView lvTeachers;
-    private ArrayList<Teacher> teachers;
+    private List<Teacher> teachers;
 
-    private String url = "http://ulstuschedule.azurewebsites.net/api/teachers";
-
-    private JsonHelper helper;
+    private static final String _url = "http://ulstuschedule.azurewebsites.net/api/teachers";
+    private JsonHelper _helper;
     private LoadingIndicator _loadingIndicator;
 
     @Override
@@ -45,8 +43,18 @@ public class TeachersActivity extends AppCompatActivity
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.teachers_loading));
         _loadingIndicator.show();
 
-        helper = new JsonHelper(this);
-        helper.DownloadJson(url, this);
+        ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
+        teachers = db.getTeachers().getAll();
+        if (teachers.size() == 0) {
+            _helper = new JsonHelper(this);
+            _helper.DownloadJson(_url, this);
+        }
+        else{
+            ArrayAdapter<Teacher> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, teachers);
+            lvTeachers.setAdapter(adapter);
+            _loadingIndicator.close();
+        }
+        db.close();
     }
 
     @Override
@@ -73,30 +81,18 @@ public class TeachersActivity extends AppCompatActivity
 
     @Override
     public void onJsonDownloaded(JSONArray data) {
-        _loadingIndicator.close();
-
         try {
-            teachers = helper.GetListOfModels(data, new Teacher());
+            teachers = _helper.GetListOfModels(data, new Teacher());
         } catch (JsonDownloadException e) {
             e.printStackTrace();
+            _loadingIndicator.close();
             return;
         }
 
         ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
-
-        List<Teacher> temp;
-        temp = db.getTeachers().getAll();
-        db.getTeachers().deleteAll();
-        temp = db.getTeachers().getAll();
-
-        long id = db.getTeachers().insert(teachers.get(0));
-        Teacher f1 = db.getTeachers().get(id);
-        db.getTeachers().delete(f1);
-        temp = db.getTeachers().getAll();
-
         db.getTeachers().insert(teachers);
-        temp = db.getTeachers().getAll();
         db.close();
+        _loadingIndicator.close();
 
         ArrayAdapter<Teacher> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, teachers);
         lvTeachers.setAdapter(adapter);

@@ -17,6 +17,7 @@ public class Faculties implements BaseColumns {
     private ScheduleDatabaseHelper _dbHelper;
 
     static final String TABLE_NAME = "faculty";
+    static final String _ID = "faculty_id";
     static final String COLUMN_NAME_NAME = "faculty_name";
 
     static final String SQL_CREATE_FACULTIES =

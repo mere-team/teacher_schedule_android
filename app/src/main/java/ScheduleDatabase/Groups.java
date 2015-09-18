@@ -17,6 +17,7 @@ public class Groups implements BaseColumns {
     private ScheduleDatabaseHelper _dbHelper;
 
     static final String TABLE_NAME = "groups";
+    static final String _ID = "groups_id";
     static final String COLUMN_NAME_NAME = "group_name";
 
     static final String SQL_CREATE_GROUPS =
@@ -34,8 +35,8 @@ public class Groups implements BaseColumns {
     public Group get(long id){
         SQLiteDatabase db = _dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " +
-                _ID + " = " + id;
+        String selectQuery = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + _ID + " = " + id;
 
         Cursor c = db.rawQuery(selectQuery, null);
         if (c == null) return null;

@@ -17,6 +17,7 @@ public class Lessons implements BaseColumns {
     private ScheduleDatabaseHelper _dbHelper;
 
     static final String TABLE_NAME = "lesson";
+    static final String _ID = "lesson_id";
     static final String COLUMN_NAME_NUMBER = "lesson_number";
     static final String COLUMN_NAME_NAME = "lesson_name";
     static final String COLUMN_NAME_DAY_OF_WEEK = "lesson_day_of_week";
@@ -28,12 +29,12 @@ public class Lessons implements BaseColumns {
     static final String SQL_CREATE_LESSONS =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     _ID + " INTEGER PRIMARY KEY, " +
-                    COLUMN_NAME_NUMBER + " INTEGER " +
-                    COLUMN_NAME_NAME + " TEXT " +
-                    COLUMN_NAME_DAY_OF_WEEK + " INTEGER " +
-                    COLUMN_NAME_NUMBER_OF_WEEK + " INTEGER " +
-                    COLUMN_NAME_CABINET + " TEXT " +
-                    COLUMN_NAME_GROUP_ID + " INTEGER " +
+                    COLUMN_NAME_NUMBER + " INTEGER, " +
+                    COLUMN_NAME_NAME + " TEXT, " +
+                    COLUMN_NAME_DAY_OF_WEEK + " INTEGER, " +
+                    COLUMN_NAME_NUMBER_OF_WEEK + " INTEGER, " +
+                    COLUMN_NAME_CABINET + " TEXT, " +
+                    COLUMN_NAME_GROUP_ID + " INTEGER, " +
                     COLUMN_NAME_TEACHER_ID + " INTEGER " +
                     ")";
 
