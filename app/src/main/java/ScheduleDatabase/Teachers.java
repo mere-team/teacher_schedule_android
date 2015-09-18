@@ -8,8 +8,6 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.Cathedra;
-import Models.Faculty;
 import Models.Teacher;
 
 /**
@@ -43,7 +41,6 @@ public class Teachers implements BaseColumns {
 
         String selectQuery = "SELECT * FROM " + TABLE_NAME + ", " + Faculties.TABLE_NAME + ", " + Cathedries.TABLE_NAME +
                 " WHERE " + _ID + " = " + id +
-                " WHERE " + TABLE_NAME + "." + COLUMN_NAME_FACULTY_ID + " = " + Faculties.TABLE_NAME + "." + Faculties._ID +
                 " WHERE " + TABLE_NAME + "." + COLUMN_NAME_CATHEDRA_ID + " = " + Cathedries.TABLE_NAME + "." + Cathedries._ID;
 
         Cursor c = db.rawQuery(selectQuery, null);
@@ -80,7 +77,6 @@ public class Teachers implements BaseColumns {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_NAME, teacher.Name);
         values.put(COLUMN_NAME_CATHEDRA_ID, teacher.CathedraId);
-        values.put(COLUMN_NAME_FACULTY_ID, teacher.FacultyId);
 
         long id = db.insert(TABLE_NAME, null, values);
 
@@ -94,7 +90,6 @@ public class Teachers implements BaseColumns {
             ContentValues values = new ContentValues();
             values.put(COLUMN_NAME_NAME, teacher.Name);
             values.put(COLUMN_NAME_CATHEDRA_ID, teacher.CathedraId);
-            values.put(COLUMN_NAME_FACULTY_ID, teacher.FacultyId);
 
             db.insert(TABLE_NAME, null, values);
         }
@@ -119,14 +114,8 @@ public class Teachers implements BaseColumns {
         Teacher teacher = new Teacher();
         teacher.Id = c.getInt(c.getColumnIndex(_ID));
         teacher.Name = c.getString(c.getColumnIndex(COLUMN_NAME_NAME));
-        teacher.FacultyId = c.getInt(c.getColumnIndex(COLUMN_NAME_FACULTY_ID));
-        teacher.Faculty = new Faculty();
-        teacher.Faculty.Id = teacher.FacultyId;
-        teacher.Faculty.Name = c.getString(c.getColumnIndex(Faculties.COLUMN_NAME_NAME));
         teacher.CathedraId = c.getInt(c.getColumnIndex(COLUMN_NAME_CATHEDRA_ID));
-        teacher.Cathedra = new Cathedra();
-        teacher.Cathedra.Id = teacher.CathedraId;
-        teacher.Cathedra.Name = c.getString(c.getColumnIndex(Cathedries.COLUMN_NAME_NAME));
+        teacher.Cathedra = Cathedries.getCathedraFromDb(c);
 
         return teacher;
     }

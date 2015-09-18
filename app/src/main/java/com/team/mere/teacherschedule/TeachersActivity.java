@@ -1,7 +1,6 @@
 package com.team.mere.teacherschedule;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,12 +14,14 @@ import android.widget.ListView;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
 import Helpers.LoadingIndicator;
 import Models.Teacher;
+import ScheduleDatabase.ScheduleDatabaseHelper;
 
 
 public class TeachersActivity extends AppCompatActivity
@@ -80,6 +81,23 @@ public class TeachersActivity extends AppCompatActivity
             e.printStackTrace();
             return;
         }
+
+        ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
+
+        List<Teacher> temp;
+        temp = db.getTeachers().getAll();
+        db.getTeachers().deleteAll();
+        temp = db.getTeachers().getAll();
+
+        long id = db.getTeachers().insert(teachers.get(0));
+        Teacher f1 = db.getTeachers().get(id);
+        db.getTeachers().delete(f1);
+        temp = db.getTeachers().getAll();
+
+        db.getTeachers().insert(teachers);
+        temp = db.getTeachers().getAll();
+        db.close();
+
         ArrayAdapter<Teacher> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, teachers);
         lvTeachers.setAdapter(adapter);
     }

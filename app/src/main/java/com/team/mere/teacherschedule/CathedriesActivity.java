@@ -29,6 +29,7 @@ public class CathedriesActivity extends AppCompatActivity
     private ListView lvCathedries;
     private List<Cathedra> cathedries;
 
+    private static final String _url = "http://ulstuschedule.azurewebsites.net/api/cathedries";
     private JsonHelper helper;
     private LoadingIndicator _loadingIndicator;
 
@@ -46,8 +47,7 @@ public class CathedriesActivity extends AppCompatActivity
         cathedries = db.getCathedries().getAll();
         if (cathedries.size() == 0) {
             helper = new JsonHelper(this);
-            String url = "http://ulstuschedule.azurewebsites.net/api/cathedries";
-            helper.DownloadJson(url, this);
+            helper.DownloadJson(_url, this);
         }
         else{
             ArrayAdapter<Cathedra> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);

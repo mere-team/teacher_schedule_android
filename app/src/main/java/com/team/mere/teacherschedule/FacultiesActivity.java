@@ -1,11 +1,9 @@
 package com.team.mere.teacherschedule;
 
 import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -14,12 +12,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.prefs.AbstractPreferences;
+import java.util.List;
 
 import Helpers.AsyncTaskJsonLoader;
 import Helpers.JsonDownloadException;
@@ -27,6 +23,7 @@ import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
 import Helpers.LoadingIndicator;
 import Models.Faculty;
+import ScheduleDatabase.ScheduleDatabaseHelper;
 
 
 public class FacultiesActivity extends AppCompatActivity
@@ -38,10 +35,10 @@ public class FacultiesActivity extends AppCompatActivity
     private final int JSON_LOADER_ID = 1;
 
     private ListView lvFaculties;
-    private ArrayList<Faculty> faculties;
+    private List<Faculty> faculties;
     private ArrayAdapter<Faculty> adapter;
 
-    private String _url = "http://ulstuschedule.azurewebsites.net/api/faculties";
+    private static final String _url = "http://ulstuschedule.azurewebsites.net/api/faculties";
     private JsonHelper helper;
     private LoadingIndicator _loadingIndicator;
 
@@ -55,9 +52,19 @@ public class FacultiesActivity extends AppCompatActivity
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.faculties_loading));
         _loadingIndicator.show();
 
-        helper = new JsonHelper(this);
-        helper.DownloadJson(_url, this);
+        ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
+        faculties = db.getFaculties().getAll();
+        if (faculties.size() == 0) {
+            helper = new JsonHelper(this);
+            helper.DownloadJson(_url, this);
+        }
+        else{
+            ArrayAdapter<Faculty> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, faculties);
+            lvFaculties.setAdapter(adapter);
+            _loadingIndicator.close();
+        }
 
+        db.close();
         getLoaderManager().initLoader(JSON_LOADER_ID, null, this);
     }
 
@@ -132,8 +139,12 @@ public class FacultiesActivity extends AppCompatActivity
             e.printStackTrace();
             return;
         }
-        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, faculties);
 
+        ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
+        db.getFaculties().insert(faculties);
+        db.close();
+
+        adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, faculties);
         lvFaculties.setAdapter(adapter);
     }
 }

@@ -8,9 +8,6 @@ public class Teacher implements IJsonInterface {
     public int Id;
     public String Name;
 
-    public int FacultyId;
-    public Faculty Faculty;
-
     public int CathedraId;
     public Cathedra Cathedra;
 
@@ -25,9 +22,7 @@ public class Teacher implements IJsonInterface {
             teacher.Id = json.getInt("Id");
             teacher.Name = json.getString("Name");
             teacher.CathedraId = json.getInt("CathedraId");
-            teacher.FacultyId = json.getInt("FacultyId");
 
-            teacher.Faculty = new Faculty().getFromJson(json.getJSONObject("Faculty"));
             teacher.Cathedra = new Cathedra().getFromJson(json.getJSONObject("Cathedra"));
         } catch (JSONException e){
             e.printStackTrace();
