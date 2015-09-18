@@ -15,19 +15,21 @@ import android.widget.ListView;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 import Helpers.JsonHelper;
 import Helpers.LoadingIndicator;
 import Models.Cathedra;
+import ScheduleDatabase.ScheduleDatabaseHelper;
 
 
 public class CathedriesActivity extends AppCompatActivity
         implements OnItemClickListener, OnJsonDownloadedListener{
 
     private ListView lvCathedries;
-    private ArrayList<Cathedra> cathedries;
+    private List<Cathedra> cathedries;
 
     private JsonHelper helper;
     private LoadingIndicator _loadingIndicator;
@@ -87,6 +89,11 @@ public class CathedriesActivity extends AppCompatActivity
             e.printStackTrace();
             return;
         }
+
+        ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
+        db.getCathedries().insert(cathedries);
+        cathedries = db.getCathedries().getAll();
+
         ArrayAdapter<Cathedra> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);
         lvCathedries.setAdapter(adapter);
     }

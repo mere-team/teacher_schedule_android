@@ -3,6 +3,8 @@ package Helpers;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
+import ScheduleDatabase.ScheduleDatabaseHelper;
+
 public class LoadingIndicator {
     private ProgressDialog _progress;
 
