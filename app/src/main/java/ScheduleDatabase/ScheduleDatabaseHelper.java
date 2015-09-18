@@ -19,12 +19,6 @@ public class ScheduleDatabaseHelper extends SQLiteOpenHelper{
 
     public ScheduleDatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
-        _cathedries = new Cathedries(this);
-        _faculties = new Faculties(this);
-        _groups = new Groups(this);
-        _teachers = new Teachers(this);
-        _lessons = new Lessons(this);
     }
 
     @Override
@@ -48,22 +42,32 @@ public class ScheduleDatabaseHelper extends SQLiteOpenHelper{
     }
 
     public Cathedries getCathedries(){
+        if (_cathedries == null)
+            _cathedries = new Cathedries(this);
         return _cathedries;
     }
 
     public Faculties getFaculties(){
+        if (_faculties == null)
+            _faculties = new Faculties(this);
         return _faculties;
     }
 
     public Groups getGroups(){
+        if (_groups == null)
+            _groups = new Groups(this);
         return _groups;
     }
 
     public Teachers getTeachers(){
+        if (_teachers == null)
+            _teachers = new Teachers(this);
         return _teachers;
     }
 
     public Lessons getLessons(){
+        if (_lessons == null)
+            _lessons = new Lessons(this);
         return _lessons;
     }
 }

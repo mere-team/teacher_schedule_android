@@ -9,15 +9,10 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
-import Models.Faculty;
 import Models.IJsonInterface;
 
 public class JsonHelper<T extends IJsonInterface<T>> {
@@ -29,7 +24,7 @@ public class JsonHelper<T extends IJsonInterface<T>> {
         _context = context;
     }
 
-    public ArrayList<T> GetListOfModels(JSONArray data, T obj) throws JsonDownloadException {
+    public List<T> GetListOfModels(JSONArray data, T obj) throws JsonDownloadException {
         if (data == null)
             throw new JsonDownloadException();
         ArrayList<T> array = new ArrayList<>(data.length());
