@@ -1,7 +1,6 @@
 package com.team.mere.teacherschedule;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -14,7 +13,6 @@ import android.widget.ListView;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Helpers.JsonDownloadException;
@@ -44,9 +42,19 @@ public class CathedriesActivity extends AppCompatActivity
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.cathedries_loading));
         _loadingIndicator.show();
 
-        helper = new JsonHelper(this);
-        String url = "http://ulstuschedule.azurewebsites.net/api/cathedries";
-        helper.DownloadJson(url, this);
+        ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
+        cathedries = db.getCathedries().getAll();
+        if (cathedries.size() == 0) {
+            helper = new JsonHelper(this);
+            String url = "http://ulstuschedule.azurewebsites.net/api/cathedries";
+            helper.DownloadJson(url, this);
+        }
+        else{
+            ArrayAdapter<Cathedra> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);
+            lvCathedries.setAdapter(adapter);
+            _loadingIndicator.close();
+        }
+        db.close();
     }
 
     @Override
@@ -92,7 +100,7 @@ public class CathedriesActivity extends AppCompatActivity
 
         ScheduleDatabaseHelper db = new ScheduleDatabaseHelper(this);
         db.getCathedries().insert(cathedries);
-        cathedries = db.getCathedries().getAll();
+        db.close();
 
         ArrayAdapter<Cathedra> adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, cathedries);
         lvCathedries.setAdapter(adapter);

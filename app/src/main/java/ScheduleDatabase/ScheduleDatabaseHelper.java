@@ -3,13 +3,7 @@ package ScheduleDatabase;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 
-import Models.Teacher;
-
-/**
- * Created by maxmr on 9/17/2015.
- */
 public class ScheduleDatabaseHelper extends SQLiteOpenHelper{
 
     private static final String LOG = "ScheduleDatabaseHelper";
@@ -30,7 +24,7 @@ public class ScheduleDatabaseHelper extends SQLiteOpenHelper{
         _faculties = new Faculties(this);
         _groups = new Groups(this);
         _teachers = new Teachers(this);
-        _lessons = new Lessons();
+        _lessons = new Lessons(this);
     }
 
     @Override
@@ -53,12 +47,6 @@ public class ScheduleDatabaseHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public void closeDb(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        if (db != null && db.isOpen())
-            db.close();
-    }
-
     public Cathedries getCathedries(){
         return _cathedries;
     }
@@ -67,6 +55,15 @@ public class ScheduleDatabaseHelper extends SQLiteOpenHelper{
         return _faculties;
     }
 
+    public Groups getGroups(){
+        return _groups;
+    }
 
+    public Teachers getTeachers(){
+        return _teachers;
+    }
 
+    public Lessons getLessons(){
+        return _lessons;
+    }
 }
