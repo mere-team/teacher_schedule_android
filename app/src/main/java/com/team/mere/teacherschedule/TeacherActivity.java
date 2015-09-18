@@ -1,11 +1,9 @@
 package com.team.mere.teacherschedule;
 
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -15,15 +13,14 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import Helpers.JsonDownloadException;
-import Helpers.JsonDownloadTask;
 import Helpers.JsonHelper;
 import Helpers.LoadingIndicator;
-import Models.Faculty;
 import Models.Lesson;
 
-import static Helpers.JsonDownloadTask.*;
+import static Helpers.JsonDownloadTask.OnJsonDownloadedListener;
 
 
 public class TeacherActivity extends AppCompatActivity
@@ -74,7 +71,7 @@ public class TeacherActivity extends AppCompatActivity
     public void onJsonDownloaded(JSONArray data) {
         _loadingIndicator.close();
 
-        ArrayList<Lesson> lessonsData;
+        List<Lesson> lessonsData;
         try {
             lessonsData = helper.GetListOfModels(data, new Lesson());
         } catch (JsonDownloadException e) {

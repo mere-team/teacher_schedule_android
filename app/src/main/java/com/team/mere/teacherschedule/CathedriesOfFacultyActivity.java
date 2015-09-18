@@ -2,7 +2,6 @@ package com.team.mere.teacherschedule;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +13,7 @@ import android.widget.ListView;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask.OnJsonDownloadedListener;
@@ -27,7 +26,7 @@ public class CathedriesOfFacultyActivity extends AppCompatActivity
         implements OnItemClickListener, OnJsonDownloadedListener{
 
     private ListView lvCathedraOfFacultyTeachers;
-    private ArrayList<Teacher> facultyCathedraTeachers;
+    private List<Teacher> facultyCathedraTeachers;
 
     private JsonHelper helper;
     private LoadingIndicator _loadingIndicator;

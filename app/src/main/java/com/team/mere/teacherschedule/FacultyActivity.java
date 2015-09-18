@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import Helpers.JsonDownloadException;
 import Helpers.JsonDownloadTask;
@@ -27,7 +27,7 @@ public class FacultyActivity extends AppCompatActivity
         JsonDownloadTask.OnJsonDownloadedListener {
 
     private ListView lvFacultyCathedries;
-    private ArrayList<Cathedra> facultyCathedries;
+    private List<Cathedra> facultyCathedries;
     private JsonHelper helper;
     private int facultyId;
 
@@ -47,6 +47,7 @@ public class FacultyActivity extends AppCompatActivity
 
         _loadingIndicator = new LoadingIndicator(this, getResources().getString(R.string.faculty_loading));
         _loadingIndicator.show();
+
 
         helper = new JsonHelper(this);
         helper.DownloadJson(url, this);
